@@ -1,4 +1,4 @@
-package com.example.base.congfig;
+package com.example.base.config;
 
 import com.example.base.entity.User;
 import org.springframework.context.annotation.Bean;
