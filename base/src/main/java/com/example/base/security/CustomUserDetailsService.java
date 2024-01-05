@@ -6,8 +6,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @Transactional
@@ -16,7 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // find user by username
-        return new CustomUserDetails(new User());
+        User user = new User();
+        user.setId(1);
+        return new CustomUserDetails(user);
     }
 }
 
