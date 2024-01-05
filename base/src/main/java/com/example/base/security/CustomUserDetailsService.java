@@ -18,10 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // set default user
-        username = "admin";
-
-        // find user by username, add to security context
+        // find user by username
         User user = repository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException("User not found"));
         return new CustomUserDetails(user);
