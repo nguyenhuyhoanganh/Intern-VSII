@@ -2,6 +2,8 @@ package com.example.base.model;
 
 import com.example.base.constant.ApplicationConstant;
 import com.example.base.constant.UserConstant;
+import com.example.base.entity.Role;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +14,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 import static com.example.base.constant.ApplicationConstant.DATE_FORMAT;
 
@@ -37,4 +40,14 @@ public class UserDTO {
 
     @Email(message = UserConstant.EMAIL_NOT_VALID)
     private String email;
+
+    private String username;
+
+    private String password;
+
+    private List<RoleDTO> roles;
+
+    private Date modifiedAt;
+
+    private Date createdAt;
 }

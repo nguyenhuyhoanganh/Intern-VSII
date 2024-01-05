@@ -1,6 +1,7 @@
 package com.example.base.config;
 
 import com.example.base.entity.User;
+import com.example.base.security.CustomUserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -22,7 +23,7 @@ public class JPAConfiguration {
             if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
                 return Optional.empty();
             }
-            User user = (User) authentication.getPrincipal();
+            User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
             return Optional.ofNullable(user);
         };
     }

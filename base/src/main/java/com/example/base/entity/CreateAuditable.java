@@ -14,7 +14,7 @@ import java.util.Date;
 public abstract class CreateAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @CreatedBy
     @JoinColumn(name = "created_by", nullable = false, updatable = false)

@@ -2,29 +2,20 @@ package com.example.base.utils;
 
 import com.example.base.entity.User;
 import com.example.base.model.UserDTO;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserUtils {
-    public User mapUserDtoToUser(UserDTO userDTO){
+    private final ModelMapper modelMapper;
 
-        return User.builder()
-                .id(userDTO.getId())
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .email(userDTO.getEmail())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .dateOfBirth(userDTO.getDateOfBirth())
-                .build();
+    public User mapUserDtoToUser(UserDTO userDTO){
+        return modelMapper.map(userDTO,User.class);
     }
     public UserDTO mapUserToUserDto(User user){
-        return UserDTO.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
-                .dateOfBirth(user.getDateOfBirth())
-                .build();
+        return modelMapper.map(user,UserDTO.class);
     }
 }

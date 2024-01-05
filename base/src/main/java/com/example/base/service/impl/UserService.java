@@ -7,8 +7,8 @@ import com.example.base.repository.UserRepository;
 import com.example.base.service.IUserService;
 import com.example.base.utils.UserUtils;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +20,7 @@ public class UserService implements IUserService {
     private final String MESSAGE_NOT_FOUND = "Người dùng không tồn tại";
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final UserUtils userUtils;
 
     @Override
@@ -41,6 +42,7 @@ public class UserService implements IUserService {
                 throw new RuntimeException("Lỗi rồi kìa truyền id làm gì ???");
             }
             User user = userUtils.mapUserDtoToUser(userDTO);
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             return userUtils.mapUserToUserDto(userRepository.save(user));
 
     }
@@ -53,6 +55,7 @@ public class UserService implements IUserService {
         }
         User user = userUtils.mapUserDtoToUser(userDTO.get());
         user.setId(id);
+        user.setPassword(passwordEncoder.encode(userDTO.get().getPassword()));
         user = userRepository.save(user);
         return userUtils.mapUserToUserDto(user);
     }
