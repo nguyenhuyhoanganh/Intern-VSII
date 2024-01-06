@@ -25,18 +25,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
-public class Address {
+public class Address   extends ModifyAuditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String line;
 
+    private String ward;
+
     private String district;
 
     private String province;
-
-    private String ward;
 
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id")

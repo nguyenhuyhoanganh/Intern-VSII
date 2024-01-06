@@ -43,7 +43,7 @@ public class AddressController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseDTO<AddressDTO> updateUser(@Valid @RequestBody AddressDTO addressDTO, @PathVariable Long id) {
+    public ResponseDTO<AddressDTO> updateAddress(@Valid @RequestBody AddressDTO addressDTO, @PathVariable Long id) {
         return ResponseDTO.<AddressDTO>builder()
                 .data(addressService.update(id, addressDTO))
                 .code(HttpStatus.OK.value())
