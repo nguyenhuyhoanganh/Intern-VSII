@@ -9,3 +9,4 @@ VALUES (1, 'ROLE_ADMIN');
 
 INSERT INTO users_roles (role_id, user_id)
 VALUES (1, 1);
+
