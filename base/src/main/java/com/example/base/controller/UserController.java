@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Phuong Oanh
+ * Class xử lý tiếp nhận request của User từ client
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
