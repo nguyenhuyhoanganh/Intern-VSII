@@ -78,8 +78,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Tạo 1 Bean cho CorsConfigurationSource.
-     * Cung cấp cấu hình cho bảo mật Cors.
+     * Tạo 1 Bean cho CorsConfigurationSource cung cấp cấu hình cho bảo mật Cors.
      * Đặt tạm thời cho phép truy cập endpoint từ mọi nguồn gốc, mọi method, mọi header.
      *
      * @return object CorsConfigurationSource.
