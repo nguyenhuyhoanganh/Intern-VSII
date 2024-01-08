@@ -1,6 +1,7 @@
 package com.example.base.constant;
 
 /**
+ * Là 1 class chứa các hằng số liên quan đến kiểm tra dữ liệu của địa chỉ.
  * @author Phuong Oanh
  */
 public class AddressConstant {

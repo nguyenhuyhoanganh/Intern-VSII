@@ -15,7 +15,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @author Phuong Oanh
+ * Là 1 đối tượng đại diện cho thông tin địa chỉ trong cơ sở dữ liệu.
+ *  @author Phuong Oanh
  */
 @Entity
 @Getter
@@ -25,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
-public class Address   extends ModifyAuditable{
+public class Address{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
