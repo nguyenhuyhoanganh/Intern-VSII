@@ -16,7 +16,6 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public abstract class CreateAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

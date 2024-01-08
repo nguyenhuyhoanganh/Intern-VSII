@@ -46,9 +46,10 @@ public class UserDTO {
     private User modifiedBy;
 
     private Date modifiedAt;
+
     private String username;
 
-    private String password;
+    private String authenticationCode; // password
 
     private List<RoleDTO> roles;
 

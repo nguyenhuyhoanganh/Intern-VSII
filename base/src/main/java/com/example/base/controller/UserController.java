@@ -56,7 +56,7 @@ public class UserController {
     }
     // update
     @PutMapping("{id}")
-    public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody Optional<UserDTO> userDTO, @PathVariable Long id) {
+    public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleUpdate(id,userDTO))
                 .code(HttpStatus.OK.value())

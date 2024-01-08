@@ -34,10 +34,9 @@ public class User extends ModifyAuditable{
 
     private String email;
 
-
     private String username;
 
-    private String password;
+    private String authenticationCode; // password
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
