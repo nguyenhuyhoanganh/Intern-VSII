@@ -46,8 +46,10 @@ public class UserDTO {
 
     private Date modifiedAt;
 
+    @NotBlank( message = UserConstant.USERNAME_NOT_BLANK)
     private String username;
 
+    @NotBlank( message = UserConstant.AUTHENTICATION_CODE_NOT_BLANK)
     private String authenticationCode; // password
 
     private List<RoleDTO> roles;

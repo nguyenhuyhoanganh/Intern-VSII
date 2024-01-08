@@ -16,20 +16,24 @@ import java.util.stream.Collectors;
  * Class cung cấp triển khai tùy chỉnh cho interface UserDetails.
  */
 @Data
-@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private User user;
+
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
 
     /**
      * Ghi đè lại phương thức getAuthorities của UserDetails.
      *
      * @return 1 Collection các SimpleGrantedAuthority.
      */
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName().toString()))
                 .collect(Collectors.toList());
     }
 

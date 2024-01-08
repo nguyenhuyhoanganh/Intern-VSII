@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -25,6 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private PasswordEncoder encoder;
     /**
      * Ghi đè lại phương thức loadUserByUsername của UserDetailsService.
      * Gọi đến UserRepository trả lại User theo username
@@ -41,6 +44,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = repository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException(UserConstant.USER_NOT_FOUND_BY_USERNAME + username));
         return new CustomUserDetails(user);
+    }
+
+    public String addUser(User user) {
+        user.setAuthenticationCode(encoder.encode(user.getAuthenticationCode()));
+        repository.save(user);
+        return "User Added Successfully";
     }
 }
 

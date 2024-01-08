@@ -1,10 +1,12 @@
 package com.example.base.service.impl;
 
 import com.example.base.constant.UserConstant;
-import com.example.base.entity.Address;
+import com.example.base.entity.Role;
 import com.example.base.entity.User;
+import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.model.UserDTO;
+import com.example.base.repository.RoleRepository;
 import com.example.base.repository.UserRepository;
 import com.example.base.service.IUserService;
 import com.example.base.utils.UserUtils;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +23,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
 
-
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserUtils userUtils;
+
 
     @Override
     public List<UserDTO> getAll() {
@@ -43,8 +47,11 @@ public class UserService implements IUserService {
         if (userDTO.getId() != null) {
             throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
         }
+
+        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
         User user = userUtils.mapUserDtoToUser(userDTO);
         user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
+        user.setRoles(roles);
         return userUtils.mapUserToUserDto(userRepository.save(user));
 
     }

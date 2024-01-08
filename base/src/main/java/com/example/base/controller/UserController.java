@@ -47,7 +47,7 @@ public class UserController {
                 .build();
     }
     // insert
-    @PostMapping("")
+    @PostMapping
     public ResponseDTO<UserDTO> insertUser(@Valid @RequestBody UserDTO userDTO) {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleInsert(userDTO))
