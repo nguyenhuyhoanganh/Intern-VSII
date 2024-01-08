@@ -1,5 +1,7 @@
 package com.example.base.utils;
 
+import com.example.base.constant.ApplicationConstant;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,7 +9,7 @@ import java.util.Date;
 
 public class DateTimeUtils {
     public static String DDHHMM = "ddHHmm";
-    public static String DD_MM_YYYY = "dd/MM/yyyy";
+    public static String DD_MM_YYYY = ApplicationConstant.DATE_FORMAT;
     public static String DD_MM_YYYY_HH_MM_SS = "dd/MM/yyyy HH:mm:ss";
     public static String DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm";
     public static String MM_YYYY = "MM/yyyy";

@@ -13,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
+import java.util.List;
+
 import static com.example.base.constant.ApplicationConstant.DATE_FORMAT;
 
 @Data
@@ -44,4 +46,11 @@ public class UserDTO {
     private User modifiedBy;
 
     private Date modifiedAt;
+    private String username;
+
+    private String password;
+
+    private List<RoleDTO> roles;
+
+
 }

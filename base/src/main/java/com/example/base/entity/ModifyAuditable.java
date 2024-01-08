@@ -17,6 +17,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public abstract class ModifyAuditable extends CreateAuditable {
     @LastModifiedBy
