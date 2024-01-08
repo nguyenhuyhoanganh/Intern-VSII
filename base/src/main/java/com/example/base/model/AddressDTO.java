@@ -10,6 +10,7 @@ import lombok.Setter;
 
 /**
  * @author Phuong Oanh
+ * Class tiếp nhận req body và trả về theo formmat
  */
 
 @Getter

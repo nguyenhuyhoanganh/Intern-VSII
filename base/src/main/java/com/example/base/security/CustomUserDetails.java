@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Data
 public class CustomUserDetails implements UserDetails {
 
-    private User user;
+    private User user;// thằng này sẽ được lưu trong SecurityContext
 
     public CustomUserDetails(User user) {
         this.user = user;

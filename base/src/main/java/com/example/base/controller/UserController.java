@@ -31,6 +31,11 @@ public class UserController {
     private final IUserService userService;
 
     // get all
+
+    /**
+     * Lấy tất danh sách User
+     * @return
+     */
     @GetMapping
     public ResponseDTO<List<UserDTO>> getAll(){
         return ResponseDTO.<List<UserDTO>>builder()

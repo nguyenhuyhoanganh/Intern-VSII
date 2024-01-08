@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * Custom format của respónse cho thống nhất
+ * @param <T>
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
