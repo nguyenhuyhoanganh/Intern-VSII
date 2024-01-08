@@ -1,8 +1,11 @@
 package com.example.base.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,6 +23,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class ModifyAuditable extends CreateAuditable {
 
     /**
@@ -27,7 +32,7 @@ public abstract class ModifyAuditable extends CreateAuditable {
      * Mối quan hệ many-to-one với entity User.
      */
     @LastModifiedBy
-    @JoinColumn(name = "modified_by", nullable = false)
+    @JoinColumn(name = "modified_by", nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private User modifiedBy;
 

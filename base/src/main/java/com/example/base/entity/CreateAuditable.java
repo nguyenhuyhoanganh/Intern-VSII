@@ -1,8 +1,10 @@
 package com.example.base.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +21,8 @@ import java.util.Date;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class CreateAuditable {
 
     /**
@@ -34,7 +38,7 @@ public abstract class CreateAuditable {
      * Mối quan hệ many-to-one với entity User.
      */
     @CreatedBy
-    @JoinColumn(name = "created_by", nullable = false, updatable = false)
+    @JoinColumn(name = "created_by", nullable = true, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
 

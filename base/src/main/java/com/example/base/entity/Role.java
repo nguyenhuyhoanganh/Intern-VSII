@@ -1,5 +1,6 @@
 package com.example.base.entity;
 
+import com.example.base.enumeration.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum roleName;
 }

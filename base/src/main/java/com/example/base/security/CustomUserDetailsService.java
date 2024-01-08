@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 /**
  * @author AnhNHH
@@ -17,12 +19,15 @@ import org.springframework.stereotype.Service;
  * Class cung cấp triển khai tùy chỉnh cho interface UserDetailsService.
  * Ký hiện @Service đánh dấu CustomUserDetailsService là 1 Bean singleton được tạo mặc định cho Spring Security.
  */
+
 @Service
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private PasswordEncoder encoder;
     /**
      * Ghi đè lại phương thức loadUserByUsername của UserDetailsService.
      * Gọi đến UserRepository trả lại User theo username
@@ -35,9 +40,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // find user by username
+
         User user = repository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException(UserConstant.USER_NOT_FOUND_BY_USERNAME + username));
         return new CustomUserDetails(user);
+    }
+
+    public String addUser(User user) {
+        user.setAuthenticationCode(encoder.encode(user.getAuthenticationCode()));
+        repository.save(user);
+        return "User Added Successfully";
     }
 }
 
