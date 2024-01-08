@@ -1,11 +1,8 @@
 package com.example.base.model;
 
-import com.example.base.constant.ApplicationConstant;
+import com.example.base.constant.DateTimeConstant;
 import com.example.base.constant.UserConstant;
-import com.example.base.entity.Role;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +14,6 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.base.constant.ApplicationConstant.DATE_FORMAT;
 
 @Data
 @NoArgsConstructor
@@ -35,7 +31,7 @@ public class UserDTO {
     @NotBlank( message = UserConstant.PHONE_NUMBER_NOT_BLANK)
     private String phoneNumber;
 
-    @DateTimeFormat(pattern = DATE_FORMAT)
+    @DateTimeFormat(pattern = DateTimeConstant.DD_MM_YYYY)
     private LocalDate dateOfBirth;
 
     @Email(message = UserConstant.EMAIL_NOT_VALID)
