@@ -12,9 +12,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
+/**
+ * @author AnhNHH.
+ * Class cấu hình JPA Auditing.
+ */
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class JPAConfiguration {
+
+    /**
+     * Cung cấp một triển khai của AuditorAware cho Spring Data JPA.
+     * Triển khai này nhận user từ security context cho các trường created_by và modified_by.
+     * Cung cấp mặc định user với ID 1L để tạm thời, do chưa triển khai đầy đủ Spring Security.
+     *
+     * @return AuditorAware triển khai cho Spring Data JPA.
+     */
     @Bean
     public AuditorAware<User> auditorProvider() {
         return () -> {
