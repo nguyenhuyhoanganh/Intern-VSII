@@ -2,7 +2,6 @@ package com.example.base.constant;
 
 /**
  * @author AnhNHH
- *
  * Class cung cấp các hằng số cho các kiểu dữ liệu DateTime.
  */
 public class DateTimeConstant {

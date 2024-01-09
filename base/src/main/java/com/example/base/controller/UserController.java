@@ -47,7 +47,7 @@ public class UserController {
                 .build();
     }
     // insert
-    @PostMapping("")
+    @PostMapping
     public ResponseDTO<UserDTO> insertUser(@Valid @RequestBody UserDTO userDTO) {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleInsert(userDTO))
@@ -56,7 +56,7 @@ public class UserController {
     }
     // update
     @PutMapping("{id}")
-    public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody Optional<UserDTO> userDTO, @PathVariable Long id) {
+    public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleUpdate(id,userDTO))
                 .code(HttpStatus.OK.value())

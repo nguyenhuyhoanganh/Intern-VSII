@@ -12,7 +12,7 @@ public interface IUserService {
 
     UserDTO handleInsert(UserDTO userDTO);
 
-    UserDTO handleUpdate(Long id,Optional<UserDTO> userDTO);
+    UserDTO handleUpdate(Long id,UserDTO userDTO) throws Exception;
 
     void deleteById(Long id);
 }

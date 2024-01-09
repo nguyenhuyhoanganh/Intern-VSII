@@ -1,7 +1,5 @@
 package com.example.base.utils;
 
-import com.example.base.constant.ApplicationConstant;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

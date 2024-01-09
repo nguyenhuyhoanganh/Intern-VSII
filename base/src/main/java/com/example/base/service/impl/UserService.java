@@ -1,8 +1,12 @@
 package com.example.base.service.impl;
 
+import com.example.base.constant.UserConstant;
+import com.example.base.entity.Role;
 import com.example.base.entity.User;
+import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.model.UserDTO;
+import com.example.base.repository.RoleRepository;
 import com.example.base.repository.UserRepository;
 import com.example.base.service.IUserService;
 import com.example.base.utils.UserUtils;
@@ -11,17 +15,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
-    private final String MESSAGE_NOT_FOUND = "Người dùng không tồn tại";
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserUtils userUtils;
+
 
     @Override
     public List<UserDTO> getAll() {
@@ -31,40 +37,56 @@ public class UserService implements IUserService {
     @Override
     public UserDTO getById(Long id) {
         return userRepository.findById(id).map(user -> userUtils.mapUserToUserDto(user)).orElseThrow(
-                () -> new UserNotFoundException(MESSAGE_NOT_FOUND)
+                () -> new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND)
         );
     }
 
     @Override
     @Transactional
     public UserDTO handleInsert(UserDTO userDTO) {
-            if (userDTO.getId() != null){
-                throw new RuntimeException("Lỗi rồi kìa truyền id làm gì ???");
-            }
-            User user = userUtils.mapUserDtoToUser(userDTO);
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            return userUtils.mapUserToUserDto(userRepository.save(user));
-
-    }
-
-    @Override
-    @Transactional
-    public UserDTO handleUpdate(Long id, Optional<UserDTO> userDTO) {
-        if (id == null || userDTO.isEmpty()){
-            throw new RuntimeException("Update thất bại vui lòng xem lại");
+        if (userDTO.getId() != null) {
+            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
         }
-        User user = userUtils.mapUserDtoToUser(userDTO.get());
-        user.setId(id);
-        user.setPassword(passwordEncoder.encode(userDTO.get().getPassword()));
-        user = userRepository.save(user);
-        return userUtils.mapUserToUserDto(user);
+
+        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+        User user = userUtils.mapUserDtoToUser(userDTO);
+        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
+        user.setRoles(roles);
+        return userUtils.mapUserToUserDto(userRepository.save(user));
+
     }
 
     @Override
     @Transactional
-    public void deleteById(Long id) throws UserNotFoundException{
-        if (id == null || !userRepository.existsById(id)){
-            throw new UserNotFoundException(MESSAGE_NOT_FOUND);
+    public UserDTO handleUpdate(Long id, UserDTO userDTO) throws Exception {
+        try {
+            Optional<User> userUpdate = userRepository.findById(userDTO.getId());
+
+            if (userUpdate.isEmpty()) {
+                throw new RuntimeException(UserConstant.USER_MESSAGE_NOT_FOUND);
+            } else {
+                User user = userUpdate.get();
+
+                user.setFirstName(userDTO.getFirstName());
+                user.setLastName(userDTO.getLastName());
+                user.setEmail(user.getEmail());
+                user.setPhoneNumber(userDTO.getPhoneNumber());
+                user.setDateOfBirth(userDTO.getDateOfBirth());
+                user.setAuthenticationCode(userDTO.getAuthenticationCode());
+                return userUtils.mapUserToUserDto(user);
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) throws UserNotFoundException {
+        if (id == null || !userRepository.existsById(id)) {
+            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
         }
         userRepository.deleteById(id);
     }

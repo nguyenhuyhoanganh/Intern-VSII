@@ -2,6 +2,7 @@ package com.example.base.model;
 
 import com.example.base.constant.DateTimeConstant;
 import com.example.base.constant.UserConstant;
+import com.example.base.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -37,13 +38,21 @@ public class UserDTO {
     @Email(message = UserConstant.EMAIL_NOT_VALID)
     private String email;
 
-    private String username;
+    private User createdBy;
 
-    private String password;
+    private Date createdAt;
 
-    private List<RoleDTO> roles;
+    private User modifiedBy;
 
     private Date modifiedAt;
 
-    private Date createdAt;
+    @NotBlank( message = UserConstant.USERNAME_NOT_BLANK)
+    private String username;
+
+    @NotBlank( message = UserConstant.AUTHENTICATION_CODE_NOT_BLANK)
+    private String authenticationCode; // password
+
+    private List<RoleDTO> roles;
+
+
 }

@@ -1,17 +1,20 @@
 package com.example.base.security;
 
+import com.example.base.enumeration.RoleEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -20,37 +23,20 @@ import java.util.Arrays;
 
 /**
  * @author AnhNHH
- *
+ * <p>
  * Class cung cấp cấu hình chung cho Spring Security.
  */
 @Configuration
 public class SecurityConfig {
 
-    /**
-     * Tạo 1 Bean cho PasswordEncoder sử dụng BCryptPasswordEncoder.
-     *
-     * @return object BCryptPasswordEncoder.
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
 
-    /**
-     * Tạo 1 Bean cho AuthenticationManager.
-     * Sử dụng AuthenticationManagerBuilder sử dụng các Bean UserDetailsService, PasswordEncoder đã tạo.
-     *
-     * @param http là object HttpSecurity để cung cấp các cấu hình cho Spring Security.
-     * @param userDetailsService làm Bean CustomUserDetails được tiêm vào method.
-     * @param passwordEncoder là Bean BCryptPasswordEncoder được tiêm vào method.
-     * @return object AuthenticationManager.
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(userDetailsService).passwordEncoder(passwordEncoder).and().build();
-    }
-
+    @Autowired
+    private UserDetailsService userDetailsService;
     /**
      * Tạo 1 Bean cho SecurityFilterChain.
      * Sử dụng SecurityFilterChain caung cấp cấu hình cho Spring Security.
@@ -60,26 +46,52 @@ public class SecurityConfig {
      * @return object SecurityFilterChain.
      */
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        /* cors, csrf */
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable);
-        /* j_session */
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers("/auth/user/**").hasAuthority(RoleEnum.ROLE_USER.toString());
+                    req.requestMatchers("/auth/admin/**").hasAuthority(RoleEnum.ROLE_ADMIN.toString());
+                    req.anyRequest().permitAll();
 
-        /* matcher */
-        http.authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-        );
+                })
+                .sessionManagement(
+                        httpSecuritySessionManagement -> httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-        /* add filter */
-
-        return http.build();
+                .build();
     }
 
+
+
     /**
-     * Tạo 1 Bean cho CorsConfigurationSource.
-     * Cung cấp cấu hình cho bảo mật Cors.
+     * Tạo 1 Bean cho AuthenticationManager.
+     * Sử dụng AuthenticationManagerBuilder sử dụng các Bean UserDetailsService, PasswordEncoder đã tạo.
+     * <p>
+     * //     * @param http là object HttpSecurity để cung cấp các cấu hình cho Spring Security.
+     * //     * @param userDetailsService làm Bean CustomUserDetails được tiêm vào method.
+     * //     * @param passwordEncoder là Bean BCryptPasswordEncoder được tiêm vào method.
+     *
+     * @return object AuthenticationManager.
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
+    // User Creation
+
+    /**
+     * Tạo 1 Bean cho CorsConfigurationSource cung cấp cấu hình cho bảo mật Cors.
      * Đặt tạm thời cho phép truy cập endpoint từ mọi nguồn gốc, mọi method, mọi header.
      *
      * @return object CorsConfigurationSource.
