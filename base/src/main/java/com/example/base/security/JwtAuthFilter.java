@@ -1,7 +1,5 @@
 package com.example.base.security;
 
-import com.example.base.security.CustomUserDetailsService;
-import com.example.base.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +14,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * @author HungDV
+ * là 1 bộ lọc trước khi đưa đến các req
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
@@ -24,13 +26,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    private final String AUTHORIZATION = "Authorization";
+    private final String PREFIX_TOKEN = "Bearer ";
+    private final int  LAST_INDEX_PREFIX_TOKEN = 7;
+
+    /**
+     * Xử lý việc lấy và dọc token từ req nếu có sẽ chuyển thành UserDetail
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @param filterChain FilterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(this.AUTHORIZATION);
         String token = null;
         String username = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith(this.PREFIX_TOKEN)) {
+            token = authHeader.substring(LAST_INDEX_PREFIX_TOKEN);
             username = jwtService.extractUsername(token);
         }
 

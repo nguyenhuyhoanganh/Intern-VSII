@@ -20,6 +20,7 @@ public class UserConstant {
 //    public static final String AUTHENTICATION_CODE_NOT_BLANK = service.getMessage("exception.auth.authentication_code.not_blank");
 
     public static final String FIRST_NAME_NOT_BLANK = "First name không được trống";
+    public static final String BLANK = "";
     public static final String EMAIL_NOT_VALID = "Email không hợp lệ";
     public static final String PHONE_NUMBER_NOT_BLANK = "Số điện thoại không được trống";
     public static final String DATE_OF_BIRTH_NOT_VALID = "Ngày sinh không hợp lệ hoặc có kiêu 'DD-MM-YYYY'";

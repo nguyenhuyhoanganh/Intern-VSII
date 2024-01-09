@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 /**
- * @author AnhNHH
+ * @author HungDV
  * <p>
  * Class cung cấp cấu hình chung cho Spring Security.
  */
@@ -67,15 +67,12 @@ public class SecurityConfig extends Exception{
 
 
 
+
     /**
-     * Tạo 1 Bean cho AuthenticationManager.
-     * Sử dụng AuthenticationManagerBuilder sử dụng các Bean UserDetailsService, PasswordEncoder đã tạo.
-     * <p>
-     * //     * @param http là object HttpSecurity để cung cấp các cấu hình cho Spring Security.
-     * //     * @param userDetailsService làm Bean CustomUserDetails được tiêm vào method.
-     * //     * @param passwordEncoder là Bean BCryptPasswordEncoder được tiêm vào method.
-     *
-     * @return object AuthenticationManager.
+     * Bean để dùng quản lý các người dùng đã đăng nhập
+     * @param config AuthenticationManager.class
+     * @return AuthenticationManager object bean
+     * @throws Exception
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
