@@ -19,21 +19,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class xử lý logic của User
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
-
+    // danh sách bean cần thiết
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserUtils userUtils;
 
 
+    /**
+     * Lấy danh sách User
+     * @return
+     */
     @Override
     public List<UserDTO> getAll() {
         return userRepository.findAll().stream().map(user -> userUtils.mapUserToUserDto(user)).toList();
     }
 
+    /**
+     * Lấy user theo Id
+     * @param id String
+     * @return UserDTO.class
+     */
     @Override
     public UserDTO getById(Long id) {
         return userRepository.findById(id).map(user -> userUtils.mapUserToUserDto(user)).orElseThrow(
@@ -41,6 +53,11 @@ public class UserService implements IUserService {
         );
     }
 
+    /**
+     * Xử lý khi insert User
+     * @param userDTO
+     * @return userDTO
+     */
     @Override
     @Transactional
     public UserDTO handleInsert(UserDTO userDTO) {
@@ -56,6 +73,13 @@ public class UserService implements IUserService {
 
     }
 
+    /**
+     * Xử lý khi update User
+     * @param id id của user
+     * @param userDTO user lâ từ req
+     * @return User được update
+     * @throws Exception
+     */
     @Override
     @Transactional
     public UserDTO handleUpdate(Long id, UserDTO userDTO) throws Exception {
@@ -82,9 +106,13 @@ public class UserService implements IUserService {
 
     }
 
+    /**
+     * Xóa user by id
+     * @param id id của user cần xóa
+     */
     @Override
     @Transactional
-    public void deleteById(Long id) throws UserNotFoundException {
+    public void deleteById(Long id) {
         if (id == null || !userRepository.existsById(id)) {
             throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
         }

@@ -26,8 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
-    @Autowired
-    private PasswordEncoder encoder;
     /**
      * Ghi đè lại phương thức loadUserByUsername của UserDetailsService.
      * Gọi đến UserRepository trả lại User theo username
@@ -46,10 +44,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    public String addUser(User user) {
-        user.setAuthenticationCode(encoder.encode(user.getAuthenticationCode()));
-        repository.save(user);
-        return "User Added Successfully";
-    }
 }
 

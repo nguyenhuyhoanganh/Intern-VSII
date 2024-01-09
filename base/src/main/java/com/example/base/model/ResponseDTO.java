@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
  * và nội dung data hoặc error mang kiểu dữ liệu <T>.
  *
  * @param <T> là kiểu dữ liệu cho data hoặc error.
+ * Custom format của respónse cho thống nhất
+ * @param <T>
  */
 @Data
 @NoArgsConstructor
