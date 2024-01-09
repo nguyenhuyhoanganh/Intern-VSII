@@ -1,8 +1,8 @@
 package com.example.base.controller;
 
 import com.example.base.entity.Address;
-import com.example.base.model.AddressDTO;
-import com.example.base.model.ResponseDTO;
+import com.example.base.dto.AddressDTO;
+import com.example.base.dto.ResponseDTO;
 import com.example.base.service.impl.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

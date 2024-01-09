@@ -1,6 +1,6 @@
 package com.example.base.service;
 
-import com.example.base.model.AddressDTO;
+import com.example.base.dto.AddressDTO;
 
 import java.util.List;
 

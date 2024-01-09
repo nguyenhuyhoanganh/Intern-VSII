@@ -2,7 +2,7 @@ package com.example.base.utils;
 
 import com.example.base.constant.UserConstant;
 import com.example.base.entity.User;
-import com.example.base.model.UserDTO;
+import com.example.base.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package com.example.base.controller;
 
-import com.example.base.model.AuthDTO;
-import com.example.base.model.ResponseDTO;
-import com.example.base.model.TokenDTO;
+import com.example.base.dto.AuthDTO;
+import com.example.base.dto.ResponseDTO;
+import com.example.base.dto.TokenDTO;
 import com.example.base.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +44,7 @@ public class JwtProviderController {
             @ApiResponse(responseCode = "403", description = "Không có quyền truy cập")
     })
     @GetMapping("/user/userProfile")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public String userProfile() {
         return "Welcome to User Profile";
     }

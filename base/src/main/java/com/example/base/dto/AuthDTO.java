@@ -1,9 +1,7 @@
-package com.example.base.model;
+package com.example.base.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**

@@ -1,7 +1,7 @@
 package com.example.base.controller;
 
-import com.example.base.model.CommentDTO;
-import com.example.base.model.ResponseDTO;
+import com.example.base.dto.CommentDTO;
+import com.example.base.dto.ResponseDTO;
 import com.example.base.service.impl.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

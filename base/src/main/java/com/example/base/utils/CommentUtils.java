@@ -1,7 +1,7 @@
 package com.example.base.utils;
 
 import com.example.base.entity.Comment;
-import com.example.base.model.CommentDTO;
+import com.example.base.dto.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

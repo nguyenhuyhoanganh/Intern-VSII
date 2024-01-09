@@ -51,7 +51,7 @@ public class SecurityConfig extends Exception{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/auth/user/**").hasAuthority(RoleEnum.ROLE_USER.toString());
+                    req.requestMatchers("/auth/user/**").hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
                     req.requestMatchers("/auth/admin/**").hasAuthority(RoleEnum.ROLE_ADMIN.toString());
                     req.anyRequest().permitAll();
 

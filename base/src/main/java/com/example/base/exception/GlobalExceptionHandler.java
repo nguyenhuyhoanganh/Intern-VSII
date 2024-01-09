@@ -1,7 +1,7 @@
 package com.example.base.exception;
 
 import com.example.base.exception.domain.UserNotFoundException;
-import com.example.base.model.ResponseDTO;
+import com.example.base.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -21,18 +21,23 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     /**
      * Bắt UserNotFoundException và trả về mã code và message lỗi
+     *
      * @param userNotFoundException
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFoundException(UserNotFoundException userNotFoundException) {
-        ResponseDTO<?> responseBody = ResponseDTO.builder().message(userNotFoundException.getMessage()).code(HttpStatus.NOT_FOUND.value()).build();
+        ResponseDTO<?> responseBody = ResponseDTO.builder().message(
+                        userNotFoundException.getMessage())
+                .code(HttpStatus.NOT_FOUND.value())
+                .build();
         return new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
      * Exception xử lý validate false
      * Bắt MethodArgumentNotValidException và trả về mã code và message lỗi
+     *
      * @param ex
      * @return ResponseEntity<Object>
      */
@@ -46,13 +51,14 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return ResponseEntity.badRequest().body(errors) ;
+        return ResponseEntity.badRequest().body(errors);
     }
 
     /**
      * Ex bắt các loại ex runtime trả về code và message lỗi
+     *
      * @param exception RuntimeException
-     * @param request WebRequest
+     * @param request   WebRequest
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(RuntimeException.class)
@@ -63,8 +69,9 @@ public class GlobalExceptionHandler {
 
     /**
      * Ex bắt các loại ex trả về code và message lỗi
+     *
      * @param exception RuntimeException
-     * @param request WebRequest
+     * @param request   WebRequest
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(Exception.class)

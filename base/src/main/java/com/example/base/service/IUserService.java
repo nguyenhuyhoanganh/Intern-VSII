@@ -1,9 +1,8 @@
 package com.example.base.service;
 
-import com.example.base.model.UserDTO;
+import com.example.base.dto.UserDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
     List<UserDTO> getAll();

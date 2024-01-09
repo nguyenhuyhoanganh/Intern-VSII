@@ -1,6 +1,6 @@
 package com.example.base.service;
 
-import com.example.base.model.CommentDTO;
+import com.example.base.dto.CommentDTO;
 
 import java.util.List;
 

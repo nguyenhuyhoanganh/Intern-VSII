@@ -1,8 +1,8 @@
 package com.example.base.controller;
 
 import com.example.base.exception.domain.UserNotFoundException;
-import com.example.base.model.ResponseDTO;
-import com.example.base.model.UserDTO;
+import com.example.base.dto.ResponseDTO;
+import com.example.base.dto.UserDTO;
 import com.example.base.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -108,7 +108,7 @@ public class UserController {
     @Operation(summary = "Xóa User theo ID",
             description = "Trả về người dùng và thông tin message trạng thái")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trả về người dùng đã ược xóa"),
+            @ApiResponse(responseCode = "204", description = "Trả về người dùng đã ược xóa"),
     })
     @Parameters(@Parameter(name = "id",description = "id của user câần update"))
     @DeleteMapping("{id}")

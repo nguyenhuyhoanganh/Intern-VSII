@@ -1,7 +1,6 @@
-package com.example.base.model;
+package com.example.base.dto;
 
 import com.example.base.constant.CommentConstant;
-import com.example.base.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

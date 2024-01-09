@@ -5,7 +5,7 @@ import com.example.base.entity.Role;
 import com.example.base.entity.User;
 import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.UserNotFoundException;
-import com.example.base.model.UserDTO;
+import com.example.base.dto.UserDTO;
 import com.example.base.repository.RoleRepository;
 import com.example.base.repository.UserRepository;
 import com.example.base.service.IUserService;
@@ -34,7 +34,7 @@ public class UserService implements IUserService {
 
     /**
      * Lấy danh sách User
-     * @return
+     * @return danh sách User
      */
     @Override
     public List<UserDTO> getAll() {
@@ -82,8 +82,8 @@ public class UserService implements IUserService {
      */
     @Override
     @Transactional
-    public UserDTO handleUpdate(Long id, UserDTO userDTO) throws Exception {
-        try {
+    public UserDTO handleUpdate(Long id, UserDTO userDTO)  {
+
             Optional<User> userUpdate = userRepository.findById(userDTO.getId());
 
             if (userUpdate.isEmpty()) {
@@ -99,9 +99,7 @@ public class UserService implements IUserService {
                 user.setAuthenticationCode(userDTO.getAuthenticationCode());
                 return userUtils.mapUserToUserDto(user);
             }
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+
 
 
     }

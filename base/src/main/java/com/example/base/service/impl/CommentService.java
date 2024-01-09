@@ -5,14 +5,13 @@ import com.example.base.constant.UserConstant;
 import com.example.base.entity.Comment;
 import com.example.base.entity.User;
 import com.example.base.exception.domain.UserNotFoundException;
-import com.example.base.model.CommentDTO;
+import com.example.base.dto.CommentDTO;
 import com.example.base.repository.CommentRepository;
 import com.example.base.repository.UserRepository;
 import com.example.base.service.ICommentService;
 import com.example.base.utils.CommentUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

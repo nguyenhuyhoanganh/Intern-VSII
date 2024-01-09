@@ -1,8 +1,7 @@
 package com.example.base.utils;
 
 import com.example.base.entity.Address;
-import com.example.base.entity.User;
-import com.example.base.model.AddressDTO;
+import com.example.base.dto.AddressDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

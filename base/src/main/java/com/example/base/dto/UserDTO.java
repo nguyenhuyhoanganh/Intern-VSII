@@ -1,4 +1,4 @@
-package com.example.base.model;
+package com.example.base.dto;
 
 import com.example.base.constant.DateTimeConstant;
 import com.example.base.constant.UserConstant;
