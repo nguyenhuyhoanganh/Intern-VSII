@@ -39,7 +39,8 @@ public class JPAConfiguration {
 //            User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
 
             // set default user id 1L to created_by and modified_by
-            User user = User.builder().id(1L).build();
+            User user = new User();
+            user.setId(1L);
             return Optional.ofNullable(user);
         };
     }

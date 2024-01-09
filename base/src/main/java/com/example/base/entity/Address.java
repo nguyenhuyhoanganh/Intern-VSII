@@ -1,6 +1,7 @@
 package com.example.base.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +17,9 @@ import lombok.ToString;
 
 /**
  * @author Phuong Oanh
- */
+ * Là 1 đối tượng đại diện cho thông tin địa chỉ trong cơ sở dữ liệu.
+ *  @author Phuong Oanh
+  */
 @Entity
 @Getter
 @Setter
@@ -25,7 +28,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
-public class Address   extends ModifyAuditable{
+public class Address{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +41,7 @@ public class Address   extends ModifyAuditable{
 
     private String province;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
 }
