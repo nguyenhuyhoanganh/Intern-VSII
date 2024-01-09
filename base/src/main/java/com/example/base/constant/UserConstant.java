@@ -27,6 +27,9 @@ public class UserConstant {
     public static final String USER_MESSAGE_IS_NULL = "Id không hợp lệ. Id là null";
     public static final String USER_MESSAGE_UPDATE_FAIL = "Update User thất bại !";
     public static final String USER_NOT_FOUND_BY_USERNAME = "Không tìm thấy người dùng có username: ";
+
+    public static final String USER_NOT_FOUND_BY_ID="Khong tim thay nguoi dung co id";
+
     public static final String USERNAME_NOT_BLANK = "Username không được trống";
     public static final String AUTHENTICATION_CODE_NOT_BLANK = "Authentication code không được trống";
 }
