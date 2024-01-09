@@ -4,13 +4,14 @@ import com.example.base.service.IMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-
+import org.springframework.stereotype.Service;
 
 
 /**
  * Triển khi của interface IMessageService truy xuất message từ MessageSource.
  */
 @RequiredArgsConstructor
+@Service
 public class MessageService implements IMessageService {
     /***
      * Tiêm Bean MessageSource vào MessageService

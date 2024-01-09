@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b06ea11e-efcf-45aa-b87e-7ae674222b12" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/example/base/constant/AddressConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/example/base/constant/AddressConstant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/example/base/constant/UserConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/example/base/constant/UserConstant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/java/com/example/base/service/impl/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/java/com/example/base/service/impl/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/src/main/resources/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/base/src/main/resources/messages.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2af4LKEqvoU0EpAOdSGpY4X27GS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.BaseApplication.executor": "Run",
+    "git-widget-placeholder": "Merging ThangDH",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/BaseVSII/Intern-VSII",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "fileTemplates",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="BaseApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="base" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.base.BaseApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-249ae16d76d6-98297cd8" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b06ea11e-efcf-45aa-b87e-7ae674222b12" name="Changes" comment="" />
+      <created>1704696241660</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1704696241660</updated>
+      <workItem from="1704696242699" duration="5010000" />
+      <workItem from="1704701407010" duration="1816000" />
+      <workItem from="1704712830879" duration="3308000" />
+      <workItem from="1704716191104" duration="5720000" />
+      <workItem from="1704756887934" duration="3793000" />
+      <workItem from="1704765812695" duration="229000" />
+      <workItem from="1704766944262" duration="191000" />
+      <workItem from="1704767146157" duration="229000" />
+      <workItem from="1704769894282" duration="326000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
