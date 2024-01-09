@@ -27,21 +27,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends Exception{
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/*").permitAll()
-                        .requestMatchers("/user/**").hasAuthority(("USER")).
-                        requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin(login -> login.loginPage("/logon").loginProcessingUrl("/logon").usernameParameter("username")
-                        .passwordParameter("password").defaultSuccessUrl("/admin", true))
-                .logout(logout -> logout.logoutUrl("/admin-logout").logoutSuccessUrl("/logon"))
-                .formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login").usernameParameter("username")
-                        .passwordParameter("password").defaultSuccessUrl("/", true))
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"));
-        return http.build();
-    }
+
     /**
      * Tạo 1 Bean cho PasswordEncoder sử dụng BCryptPasswordEncoder.
      *
