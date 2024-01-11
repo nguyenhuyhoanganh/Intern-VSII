@@ -19,7 +19,6 @@ public class UserUtils {
      */
     public User mapUserDtoToUser(UserDTO userDTO){
         User user = modelMapper.map(userDTO,User.class);
-        user.setAuthenticationCode(UserConstant.BLANK);
         return user;
     }
 
@@ -29,6 +28,9 @@ public class UserUtils {
      * @return UserDTO.class
      */
     public UserDTO mapUserToUserDto(User user){
-        return modelMapper.map(user,UserDTO.class);
+        user.setAuthenticationCode(UserConstant.BLANK);
+        UserDTO userDTO = modelMapper.map(user,UserDTO.class);
+
+        return userDTO;
     }
 }

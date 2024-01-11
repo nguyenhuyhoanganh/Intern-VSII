@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Trả về danh sách ngời dùng"),
     })
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<List<UserDTO>> getAll(){
         return ResponseDTO.<List<UserDTO>>builder()
                 .data(userService.getAll())
@@ -67,6 +69,7 @@ public class UserController {
     })
     @Parameters(@Parameter(name = "id",description = "ID của User"))
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<UserDTO> getById(@PathVariable Optional<Long> id) {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.getById(id.orElseThrow( () -> new UserNotFoundException("ID không hợp lệ"))))
@@ -82,6 +85,7 @@ public class UserController {
     })
     @Parameters(@Parameter(name = "AuthDTO.class",description = "Gửi lên 2 trường username và pass"))
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO<UserDTO> insertUser(@Valid @RequestBody UserDTO userDTO) {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleInsert(userDTO))
@@ -98,6 +102,7 @@ public class UserController {
     @Parameters({@Parameter(name = "UserDTO",description = "thông tin cần update của người dùng"),
             @Parameter(name = "id",description = "id của user câần update")})
     @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.handleUpdate(id,userDTO))
@@ -108,10 +113,11 @@ public class UserController {
     @Operation(summary = "Xóa User theo ID",
             description = "Trả về người dùng và thông tin message trạng thái")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Trả về người dùng đã ược xóa"),
+            @ApiResponse(responseCode = "204", description = "Trả về người dùng đã được xóa"),
     })
     @Parameters(@Parameter(name = "id",description = "id của user câần update"))
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseDTO<UserDTO> deleteById(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseDTO.<UserDTO>builder()

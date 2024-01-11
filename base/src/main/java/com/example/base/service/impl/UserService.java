@@ -84,23 +84,22 @@ public class UserService implements IUserService {
     @Transactional
     public UserDTO handleUpdate(Long id, UserDTO userDTO)  {
 
-            Optional<User> userUpdate = userRepository.findById(userDTO.getId());
+            Optional<User> userUpdate = userRepository.findById(id);
 
             if (userUpdate.isEmpty()) {
                 throw new RuntimeException(UserConstant.USER_MESSAGE_NOT_FOUND);
             } else {
                 User user = userUpdate.get();
 
+                user.setId(id);
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
-                user.setEmail(user.getEmail());
+                user.setEmail(userDTO.getEmail());
                 user.setPhoneNumber(userDTO.getPhoneNumber());
                 user.setDateOfBirth(userDTO.getDateOfBirth());
-                user.setAuthenticationCode(userDTO.getAuthenticationCode());
+                user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
                 return userUtils.mapUserToUserDto(user);
             }
-
-
 
     }
 
