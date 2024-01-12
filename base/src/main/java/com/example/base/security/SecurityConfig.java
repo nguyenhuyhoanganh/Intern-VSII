@@ -1,5 +1,6 @@
 package com.example.base.security;
 
+import com.example.base.constant.SecurityConstant;
 import com.example.base.enumeration.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -51,8 +52,8 @@ public class SecurityConfig extends Exception{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/auth/user/**").hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
-                    req.requestMatchers("/auth/admin/**").hasAuthority(RoleEnum.ROLE_ADMIN.toString());
+                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
+                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
                     req.anyRequest().permitAll();
 
                 })

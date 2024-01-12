@@ -40,14 +40,6 @@ public class UserDTO {
     @Email(message = UserConstant.EMAIL_NOT_VALID)
     private String email;
 
-    private User createdBy;
-
-    private Date createdAt;
-
-    private User modifiedBy;
-
-    private Date modifiedAt;
-
     @NotBlank( message = UserConstant.USERNAME_NOT_BLANK)
     private String username;
 
@@ -55,6 +47,5 @@ public class UserDTO {
     private String authenticationCode; // password
 
     private List<RoleDTO> roles;
-
 
 }

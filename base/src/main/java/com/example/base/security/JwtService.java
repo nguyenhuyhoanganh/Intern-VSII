@@ -1,12 +1,14 @@
 package com.example.base.security;
 
 
+import com.example.base.constant.SecurityConstant;
 import com.example.base.dto.TokenDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +25,8 @@ import java.util.function.Function;
 @Component
 public class JwtService {
 
-    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
-    public static final int TOKEN_EXPIRATION = 1000 * 60 * 30;
+    @Value("${application.jwt.secret}")
+    private String SECRET ;
 
     /**
      * Gen token
@@ -33,6 +35,9 @@ public class JwtService {
      */
     public TokenDTO generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
+        // subject data
+
+        //
         return TokenDTO.builder().token(createToken(claims, userName)).build();
     }
 
@@ -47,7 +52,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + this.TOKEN_EXPIRATION))
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstant.TOKEN_EXPIRATION))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

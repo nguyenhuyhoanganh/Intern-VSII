@@ -1,5 +1,6 @@
 package com.example.base.security;
 
+import com.example.base.constant.SecurityConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,10 +27,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    private final String AUTHORIZATION = "Authorization";
-    private final String PREFIX_TOKEN = "Bearer ";
-    private final int  LAST_INDEX_PREFIX_TOKEN = 7;
-
     /**
      * Xử lý việc lấy và dọc token từ req nếu có sẽ chuyển thành UserDetail
      * @param request HttpServletRequest
@@ -40,11 +37,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader(this.AUTHORIZATION);
+        String authHeader = request.getHeader(SecurityConstant.AUTHORIZATION_HEADER);
         String token = null;
         String username = null;
-        if (authHeader != null && authHeader.startsWith(this.PREFIX_TOKEN)) {
-            token = authHeader.substring(LAST_INDEX_PREFIX_TOKEN);
+        if (authHeader != null && authHeader.startsWith(SecurityConstant.PREFIX_TOKEN)) {
+            token = authHeader.substring(SecurityConstant.LAST_INDEX_PREFIX_TOKEN);
             username = jwtService.extractUsername(token);
         }
 

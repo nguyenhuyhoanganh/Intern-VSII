@@ -14,21 +14,25 @@ public class UserUtils {
 
     /**
      * Chuyển và map từ kiểu userDTO sang User
+     *
      * @param userDTO
      * @return User.class
      */
-    public User mapUserDtoToUser(UserDTO userDTO){
-        User user = modelMapper.map(userDTO,User.class);
-        user.setAuthenticationCode(UserConstant.BLANK);
+    public User mapUserDtoToUser(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
         return user;
     }
 
     /**
      * Chuyển và map từ kiểu User sang userDTO
+     *
      * @param user
      * @return UserDTO.class
      */
-    public UserDTO mapUserToUserDto(User user){
-        return modelMapper.map(user,UserDTO.class);
+    public UserDTO mapUserToUserDto(User user) {
+//        user.setAuthenticationCode(UserConstant.BLANK);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setAuthenticationCode(UserConstant.BLANK);
+        return userDTO;
     }
 }
