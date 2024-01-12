@@ -35,6 +35,9 @@ public class JwtService {
      */
     public TokenDTO generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
+        // subject data
+
+        //
         return TokenDTO.builder().token(createToken(claims, userName)).build();
     }
 
