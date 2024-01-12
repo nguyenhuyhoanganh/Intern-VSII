@@ -25,8 +25,4 @@ VALUES (1, 'Số 7', 'Yên Sở', 'Hoài Đức', 'Hà Nội');
 INSERT INTO address (id_user, line, ward, district, province)
 VALUES (1, 'Số 8', 'abc', 'Nam Từ Liêm', 'Hà Nội');
 
--- Stored procedure -------------------------------------------------
-
---
-
 
