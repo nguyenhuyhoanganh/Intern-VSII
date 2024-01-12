@@ -46,13 +46,17 @@ public class CommentController {
      * @return trả về thông tin comment và trạng thái thành công
      */
     @PutMapping("/comment/update/{id}")
-    public ResponseEntity<ResponseDTO<CommentDTO>> updateAddress(@Valid @RequestBody CommentDTO commentDTO, @PathVariable Long id) {
-        ResponseDTO<CommentDTO> responseDTO= ResponseDTO.<CommentDTO>builder()
-                .data(commentService.update(commentDTO,id))
+    public ResponseEntity<ResponseDTO<CommentDTO>> updateComment(
+            @Valid @RequestBody CommentDTO commentDTO,
+            @PathVariable Long id) {
+        ResponseDTO<CommentDTO> responseDTO = ResponseDTO.<CommentDTO>builder()
+                .data(commentService.updateComment(commentDTO.getContent(), commentDTO.getCreateCMTDay(), id))
                 .code(HttpStatus.OK.value())
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
+
+
     /**
      *API thêm  comment của người dùng theo id của comment
      * @param commentDTO truyền vào toàn bộ thông tin của comment như ,id ,content,ngày tạo,idUser
@@ -73,12 +77,12 @@ public class CommentController {
      * @param id truyền vào id của comment
      * @return trạng thái đã xóa thành công
      */
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comment/delete/{id}")
     public ResponseEntity<ResponseDTO<CommentDTO>> deleteById(@PathVariable Long id) {
         commentService.deleteByUserId(id);
         ResponseDTO<CommentDTO> responseDTO = ResponseDTO.<CommentDTO>builder()
-                .code(HttpStatus.NO_CONTENT.value())
+                .code(HttpStatus.OK.value())
                 .build();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 }
