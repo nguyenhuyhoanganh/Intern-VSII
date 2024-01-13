@@ -21,6 +21,7 @@ import java.util.Optional;
  * tìm địa chỉ theo ID người dùng, tạo mới địa chỉ, cập nhật địa chỉ, và xóa địa chỉ.
  * @author Phuong Oanh
  */
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AddressService implements IAddressService {
@@ -34,7 +35,10 @@ public class AddressService implements IAddressService {
      */
     @Override
     public List<AddressDTO> getAll() {
-        return addressRepository.findAll().stream()
+//        return addressRepository.findAll().stream()
+//                .map(address -> addressUtils.mapAddressToAddressDto(address))
+//                .toList();
+        return addressRepository.getAllAddress().stream()
                 .map(address -> addressUtils.mapAddressToAddressDto(address))
                 .toList();
     }
@@ -46,7 +50,10 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressDTO findAddressById(Long id) {
-        return addressRepository.findById(id).map(address -> addressUtils.mapAddressToAddressDto(address)).orElseThrow(
+//        return addressRepository.findById(id).map(address -> addressUtils.mapAddressToAddressDto(address)).orElseThrow(
+//                () -> new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND)
+//        );
+        return addressRepository.findAddressById(id).map(address -> addressUtils.mapAddressToAddressDto(address)).orElseThrow(
                 () -> new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND)
         );
     }
@@ -58,9 +65,17 @@ public class AddressService implements IAddressService {
      */
     @Override
     public List<AddressDTO> findAddressByUserId(Long idUser) {
-        Optional<User> optionalUser = userRepository.findById(idUser);
-        if (optionalUser.isPresent()) {
-            return addressRepository.findByUserId(idUser).stream()
+//        Optional<User> optionalUser = userRepository.findById(idUser);
+//        if (optionalUser.isPresent()) {
+//            return addressRepository.findByUserId(idUser).stream()
+//                    .map(address -> addressUtils.mapAddressToAddressDto(address))
+//                    .toList();
+//        } else {
+//            throw new AddressNotFoundException(AddressConstant.USER_NOT_FOUND);
+//        }
+        List<Address> addresses = addressRepository.findAddressByUserId(idUser);
+        if (!addresses.isEmpty()) {
+            return addresses.stream()
                     .map(address -> addressUtils.mapAddressToAddressDto(address))
                     .toList();
         } else {
@@ -76,17 +91,26 @@ public class AddressService implements IAddressService {
      * @return Đối tượng AddressDTO của địa chỉ mới được tạo.
      * @throws RuntimeException Nếu không tìm thấy người dùng với ID tương ứng.
      */
-    @Transactional
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO) {
-        User user = userRepository.findById(addressDTO.getUserId())
-                .orElseThrow(() -> new AddressNotFoundException(AddressConstant.USER_NOT_FOUND));
-        if (addressRepository.existsById(addressDTO.getId())) {
-            throw new AddressNotFoundException("Địa chỉ đã tồn tại");
+//        User user = userRepository.findById(addressDTO.getUserId())
+//                .orElseThrow(() -> new AddressNotFoundException(AddressConstant.USER_NOT_FOUND));
+//        Address newAddress = addressUtils.mapAddressDtoToAddress(addressDTO);
+//        newAddress.setUser(user);
+//        return addressUtils.mapAddressToAddressDto(addressRepository.save(newAddress));
+        if (addressDTO.getId() != null) {
+            throw new AddressNotFoundException(AddressConstant.ADDRESS_IS_NULL);
         }
-        Address newAddress = addressUtils.mapAddressDtoToAddress(addressDTO);
-        newAddress.setUser(user);
-        return addressUtils.mapAddressToAddressDto(addressRepository.save(newAddress));
+        if (addressDTO.getUserId() == null || !userRepository.existsById(addressDTO.getUserId())) {
+            throw new AddressNotFoundException(AddressConstant.USER_NOT_FOUND);
+        }
+        Optional<Address> optionalAddress = addressRepository.createAddress(
+                addressDTO.getUserId(),
+                addressDTO.getLine(),
+                addressDTO.getDistrict(),
+                addressDTO.getProvince(),
+                addressDTO.getWard());
+        return addressUtils.mapAddressToAddressDto(optionalAddress.get());
     }
 
     /**
@@ -96,21 +120,35 @@ public class AddressService implements IAddressService {
      * @return Đối tượng AddressDTO sau khi được cập nhật.
      * @throws AddressNotFoundException Nếu không tìm thấy địa chỉ hoặc người dùng tương ứng.
      */
-    @Transactional
+
     @Override
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
-        Optional<Address> optionalAddress = addressRepository.findById(id);
-        Optional<User> optionalUser = userRepository.findById(addressDTO.getUserId());
-
-        if (optionalAddress.isPresent() && optionalUser.isPresent()) {
-            Address address = optionalAddress.get();
-            Address updatedAddress = addressUtils.mapAddressDtoToAddress(addressDTO);
-            updatedAddress.setId(id);
-            updatedAddress.setUser(address.getUser());
-            return addressUtils.mapAddressToAddressDto(addressRepository.save(updatedAddress));
-        } else {
-            throw new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND);
+//        Optional<Address> optionalAddress = addressRepository.findById(id);
+//        Optional<User> optionalUser = userRepository.findById(addressDTO.getUserId());
+//
+//        if (optionalAddress.isPresent() && optionalUser.isPresent()) {
+//            Address address = optionalAddress.get();
+//            Address updatedAddress = addressUtils.mapAddressDtoToAddress(addressDTO);
+//            updatedAddress.setId(id);
+//            updatedAddress.setUser(address.getUser());
+//            return addressUtils.mapAddressToAddressDto(addressRepository.save(updatedAddress));
+//        } else {
+//            throw new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND);
+//        }
+        if (id != addressDTO.getId()) {
+            throw new AddressNotFoundException(AddressConstant.ADDRESS_NOT_MATCH);
         }
+        if (addressDTO.getUserId() == null || !userRepository.existsById(addressDTO.getUserId())) {
+            throw new AddressNotFoundException(AddressConstant.USER_NOT_FOUND);
+        }
+        Optional<Address> optionalAddress = addressRepository.updateAddress(
+                id,
+                addressDTO.getUserId(),
+                addressDTO.getLine(),
+                addressDTO.getDistrict(),
+                addressDTO.getProvince(),
+                addressDTO.getWard());
+        return addressUtils.mapAddressToAddressDto(optionalAddress.get());
     }
 
     /**
@@ -120,10 +158,15 @@ public class AddressService implements IAddressService {
      */
     @Override
     public void deleteAddressById(Long id) {
+//        Optional<Address> optional = addressRepository.findById(id);
+//        if (!optional.isPresent()) {
+//            throw new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND);
+//        }
+//        addressRepository.delete(optional.get());
         Optional<Address> optional = addressRepository.findById(id);
         if (!optional.isPresent()) {
             throw new AddressNotFoundException(AddressConstant.ADDRESS_NOT_FOUND);
         }
-        addressRepository.delete(optional.get());
+        addressRepository.deleteAddressProcedure(id);
     }
 }
