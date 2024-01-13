@@ -33,4 +33,5 @@ public class UserConstant {
 
     public static final String USERNAME_NOT_BLANK = "Username không được trống";
     public static final String AUTHENTICATION_CODE_NOT_BLANK = "Authentication code không được trống";
+    public static final String ID_NOT_MATCH = "Id trên url và id trong Object phải trùng nhau";
 }

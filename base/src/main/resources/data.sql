@@ -25,8 +25,8 @@ VALUES (1, 'Số 7', 'Yên Sở', 'Hoài Đức', 'Hà Nội');
 INSERT INTO address (id_user, line, ward, district, province)
 VALUES (1, 'Số 8', 'abc', 'Nam Từ Liêm', 'Hà Nội');
 
--- Stored procedure -------------------------------------------------
-
---
-
+INSERT INTO comment(id_user,content,createcmtday)
+VALUES (1,'Bai nay rat hay','2024-06-24');
+INSERT INTO comment(id_user,content,createcmtday)
+VALUES (1,'Bai nay khong hay','2026-06-24');
 

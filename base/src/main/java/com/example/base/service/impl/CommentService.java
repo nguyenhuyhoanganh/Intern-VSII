@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +40,7 @@ public class CommentService implements ICommentService{
 
     @Override
     public List<CommentDTO> getAll() {
-        return commentRepository.findAll().stream()
+        return commentRepository.getAllComment().stream()
                 .map(comment->CommentUtils.mapCommentToCommentDTO(comment)).toList();
     }
     /**
@@ -48,7 +50,7 @@ public class CommentService implements ICommentService{
      */
     @Override
     public List<CommentDTO> findCommentByUserId(Long idUser) {
-        return commentRepository.findByUserId(idUser).stream()
+        return commentRepository.getCommentByUserID(idUser).stream()
                 .map(comment->CommentUtils.mapCommentToCommentDTO(comment)).toList();
     }
     /**
@@ -61,11 +63,27 @@ public class CommentService implements ICommentService{
     @Override
     @Transactional
     public CommentDTO insert(CommentDTO commentDTO) {
-        User user=userRepository.findById(commentDTO.getUserID())
-                .orElseThrow(() -> new UserNotFoundException(UserConstant.USER_NOT_FOUND_BY_ID));
-        Comment newComment = CommentUtils.mapCommentDtoToComment(commentDTO);
-        newComment.setUser(user);
-        return CommentUtils.mapCommentToCommentDTO(commentRepository.save(newComment));
+        Long userId = commentDTO.getUserID();
+        String content = commentDTO.getContent();
+        LocalDate createCmtDay = commentDTO.getCreateCMTDay();
+
+        // Gọi stored procedure để chèn comment
+        Comment insertedComment = commentRepository.addComment(userId, content, createCmtDay);
+
+        // Lấy thông tin comment sau khi chèn thành công
+        Long commentId = commentRepository.getCommentIdAfterAdd();
+
+        if (commentId != null) {
+            Optional<Comment> retrievedComment = commentRepository.findById(commentId);
+
+            if (retrievedComment.isPresent()) {
+                return CommentUtils.mapCommentToCommentDTO(retrievedComment.get());
+            } else {
+                throw new RuntimeException("Lỗi khi lấy thông tin comment sau khi chèn.");
+            }
+        } else {
+            throw new RuntimeException("Chèn không thành công");
+        }
     }
     /**
      * @param id truyền vào id của comment và toàn bộ thông tin của comment như content,ngày tạo,idUser
@@ -76,14 +94,16 @@ public class CommentService implements ICommentService{
      */
     @Override
     @Transactional
-    public CommentDTO update(CommentDTO commentDTO, Long id) {
+    public CommentDTO updateComment( String newContent, LocalDate createCmtDay, Long id) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
-            Comment comment = optionalComment.get();
-            Comment updateComment = CommentUtils.mapCommentDtoToComment(commentDTO);
-            updateComment.setId(id);
-            updateComment.setUser(comment.getUser());
-            return CommentUtils.mapCommentToCommentDTO(commentRepository.save(updateComment));
+            Comment updatedComment = commentRepository.updateComment(id, newContent, createCmtDay);
+
+            if (updatedComment != null) {
+                return CommentUtils.mapCommentToCommentDTO(updatedComment);
+            } else {
+                throw new RuntimeException("Lỗi khi cập nhật comment");
+            }
         } else {
             throw new RuntimeException(CommentConstant.COMMENT_NOT_FOUND);
         }
@@ -95,11 +115,10 @@ public class CommentService implements ICommentService{
      * Case2: Nếu không có comment như trên thì in ra exception không tìm thấy comment
      */
     @Override
-    @Transactional
     public void deleteByUserId(Long id) {
         Optional<Comment> optionalComment=commentRepository.findById(id);
         if(optionalComment.isPresent()){
-            commentRepository.delete(optionalComment.get());
+            commentRepository.deleteCommentByID(id);
         }else{
             throw new RuntimeException(CommentConstant.COMMENT_NOT_FOUND);
         }
