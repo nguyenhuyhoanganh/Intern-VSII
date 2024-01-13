@@ -16,16 +16,13 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByUsername(String username);
 
-    // procedure
-
-    // get all
     @Query(value = "call sp_findAllUser()",nativeQuery = true)
     List<User> sp_findAllUser();
-    // get by id
+
     @Query(value = "call sp_findUserById(:id_in)",nativeQuery = true)
     Optional<User> sp_findUserById(@Param("id_in")Long id);
-    // create
-//    @Query(value = "call sp_createUser(:newID, :date_of_birth,:authentication_code,:email, :first_name,:last_name, :phone_number,:username)",nativeQuery = true)
+
+
     @Procedure(procedureName = "sp_createUser")
     Optional<User> sp_createUser(@Param("date_of_birth")LocalDate dateOfBirth,
                        @Param("authentication_code") String authenticationCode,
@@ -35,7 +32,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
                        @Param("phone_number")String phoneNumber,
                        @Param("username")String username);
 
-    // update
     @Procedure(procedureName = "sp_updateUser")
     Optional<User> sp_updateUser(@Param("id_in")Long id,
                                  @Param("date_of_birth")LocalDate dateOfBirth,
@@ -45,7 +41,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
                                  @Param("last_name")String lastName,
                                  @Param("phone_number")String phoneNumber,
                                  @Param("username")String username);
-    // delete
 
     @Procedure(procedureName = "sp_deleteUserById")
     void sp_deleteUserById(@Param("id_in")Long id);

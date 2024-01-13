@@ -4,6 +4,7 @@ import com.example.base.constant.UserConstant;
 import com.example.base.entity.Role;
 import com.example.base.entity.User;
 import com.example.base.enumeration.RoleEnum;
+import com.example.base.exception.domain.IdNotMatchException;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.UserDTO;
 import com.example.base.repository.RoleRepository;
@@ -57,10 +58,25 @@ public class UserService implements IUserService {
 
     /**
      * Xử lý khi insert User
-     *
-     * @param userDTO
-     * @return userDTO
+     * @param userDTO thông tin user muốn khởi tạo
+     * @return userDTO thông tin user đã đự cập nhật
      */
+    @Override
+    @Transactional
+    public UserDTO handleInsert(UserDTO userDTO) {
+        if (userDTO.getId() != null) {
+            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
+        }
+        Optional<User> userCreated = userRepository.sp_createUser(
+                userDTO.getDateOfBirth(),
+                passwordEncoder.encode(userDTO.getAuthenticationCode()),
+                userDTO.getEmail(),
+                userDTO.getFirstName(),
+                userDTO.getLastName(),
+                userDTO.getPhoneNumber(),
+                userDTO.getUsername());
+        return userUtils.mapUserToUserDto(userCreated.get());
+    }
 //    @Override
 //    @Transactional
 //    public UserDTO handleInsert(UserDTO userDTO) {
@@ -75,37 +91,39 @@ public class UserService implements IUserService {
 //        return userUtils.mapUserToUserDto(userRepository.save(user));
 //
 //    }
+
+    /**
+     * Xử lý khi update User
+     *
+     * @param id      id của user cần update
+     * @param userDTO thông tin user cần sửa
+     * @return User thông tin user đã đựược update
+     */
     @Override
     @Transactional
-    public UserDTO handleInsert(UserDTO userDTO) {
-        if (userDTO.getId() != null) {
-            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
+    public UserDTO handleUpdate(Long id, UserDTO userDTO) {
+
+
+        if (id != userDTO.getId()){
+            throw new IdNotMatchException(UserConstant.ID_NOT_MATCH);
         }
-
-//        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
-//        User user = userUtils.mapUserDtoToUser(userDTO);
-//        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
-//        user.setRoles(roles);
-
-        Optional<User> userCreated = userRepository.sp_createUser(
+        if (id == null || !userRepository.existsById(id)) {
+            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
+        }
+        // tham số của user đc thay đổi
+        Optional<User> userUpdate = userRepository.sp_updateUser(
+                id,
                 userDTO.getDateOfBirth(),
                 passwordEncoder.encode(userDTO.getAuthenticationCode()),
                 userDTO.getEmail(),
                 userDTO.getFirstName(),
                 userDTO.getLastName(),
                 userDTO.getPhoneNumber(),
-                userDTO.getUsername());
-        return userUtils.mapUserToUserDto(userCreated.get());
-    }
+                userDTO.getUsername()
+        );
 
-    /**
-     * Xử lý khi update User
-     *
-     * @param id      id của user
-     * @param userDTO user lâ từ req
-     * @return User được update
-     * @throws Exception
-     */
+        return userUtils.mapUserToUserDto(userUpdate.get());
+    }
 //    @Override
 //    @Transactional
 //    public UserDTO handleUpdate(Long id, UserDTO userDTO)  {
@@ -128,34 +146,19 @@ public class UserService implements IUserService {
 //            }
 //
 //    }
-    @Override
-    @Transactional
-    public UserDTO handleUpdate(Long id, UserDTO userDTO) {
-
-
-        if (id == null || !userRepository.existsById(id)) {
-            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
-        }
-        // tham số của user đc thay đổi
-        Optional<User> userUpdate = userRepository.sp_updateUser(
-                id,
-                userDTO.getDateOfBirth(),
-                passwordEncoder.encode(userDTO.getAuthenticationCode()),
-                userDTO.getEmail(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getPhoneNumber(),
-                userDTO.getUsername()
-        );
-
-        return userUtils.mapUserToUserDto(userUpdate.get());
-    }
 
     /**
      * Xóa user by id
      *
      * @param id id của user cần xóa
      */
+    @Override
+    public void deleteById(Long id) {
+        if (id == null || !userRepository.existsById(id)) {
+            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
+        }
+        userRepository.sp_deleteUserById(id);
+    }
 //    @Override
 //    @Transactional
 //    public void deleteById(Long id) {
@@ -164,11 +167,4 @@ public class UserService implements IUserService {
 //        }
 //        userRepository.deleteById(id);
 //    }
-    @Override
-    public void deleteById(Long id) {
-        if (id == null || !userRepository.existsById(id)) {
-            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
-        }
-        userRepository.sp_deleteUserById(id);
-    }
 }

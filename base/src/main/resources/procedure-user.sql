@@ -43,7 +43,7 @@ call sp_findUserById( LAST_INSERT_ID());
 END $$
 DELIMITER ;
 
-call sp_createUser('2003-01-30','12345','duongviethung2003@gmail.com',N'Hùng',N'Dương Việt','0375773850','viethung2801')
+-- call sp_createUser('2003-01-30','12345','duongviethung2003@gmail.com',N'Hùng',N'Dương Việt','0375773850','viethung2801')
 -- update
 
 -- create
