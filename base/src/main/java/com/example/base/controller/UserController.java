@@ -100,7 +100,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Lỗi không tìm thấy người dùng hoặc không thỏa mãn validate với id được gửi"),
     })
     @Parameters({@Parameter(name = "UserDTO",description = "thông tin cần update của người dùng"),
-            @Parameter(name = "id",description = "id của user câần update")})
+            @Parameter(name = "id",description = "id của user cần update")})
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
