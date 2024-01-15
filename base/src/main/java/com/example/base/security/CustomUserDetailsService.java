@@ -41,6 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = repository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException(UserConstant.USER_NOT_FOUND_BY_USERNAME + username));
+//        user.getRoles().stream().forEach(role -> role.getPermissions().forEach(per-> System.out.println(per.getName())));
         return new CustomUserDetails(user);
     }
 

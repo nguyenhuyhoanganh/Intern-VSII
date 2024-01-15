@@ -4,8 +4,8 @@ package com.example.base.constant;
  * @author HungDV
  */
 public class SecurityConstant {
-    public static final String[] PRIVATE_URIS_ROLE_USER= {"/auth/user/**"};
-    public static final String[] PRIVATE_URIS_ROLE_ADMIN= {"/auth/admin/**"};
+    public static final String[] PRIVATE_URIS_ROLE_USER= {"/auth/user/**","/users/**"};
+    public static final String[] PRIVATE_URIS_ROLE_ADMIN= {"/auth/admin/**","/users/**","/users"};
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String PREFIX_TOKEN = "Bearer ";

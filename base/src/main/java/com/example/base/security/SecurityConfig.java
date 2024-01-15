@@ -5,6 +5,7 @@ import com.example.base.enumeration.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,9 +51,11 @@ public class SecurityConfig extends Exception{
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        user chỉ xem users/** (get)
+
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
+                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
                     req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
                     req.anyRequest().permitAll();
 

@@ -11,13 +11,29 @@ VALUES (1, 'ROLE_ADMIN');
 INSERT INTO roles (id, role_name)
 VALUES (2, 'ROLE_USER');
 
+-- Insert permission
+INSERT INTO permissions(id,name)
+VALUES(1,'READ_ONE_USER_PERMISSION');
+INSERT INTO permissions(id,name)
+VALUES(2,'READ_MANY_USER_PERMISSION');
+
 -- Insert table Roles_Users
 INSERT INTO users_roles (role_id, user_id)
 VALUES (1, 1);
-INSERT INTO users_roles (role_id, user_id)
-VALUES (2, 1);
+-- INSERT INTO users_roles (role_id, user_id)
+-- VALUES (2, 1);
 INSERT INTO users_roles (role_id, user_id)
 VALUES (2, 2);
+
+
+--Insert Roles_Permissions
+INSERT INTO roles_permissions(permission_id,role_id)
+VALUES (1,1);
+INSERT INTO roles_permissions(permission_id,role_id)
+VALUES (2,1);
+INSERT INTO roles_permissions(permission_id,role_id)
+VALUES (1,2);
+
 
 -- Insert Table Address
 INSERT INTO address (id_user, line, ward, district, province)

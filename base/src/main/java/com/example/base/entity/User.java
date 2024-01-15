@@ -46,6 +46,7 @@ public class User {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private Collection<Role> roles;
 
+
 //    @LastModifiedDate
 //    @Temporal(TemporalType.TIMESTAMP)
 //    @Column(name = "modified_at")
