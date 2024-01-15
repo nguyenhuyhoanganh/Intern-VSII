@@ -1,11 +1,11 @@
 package com.example.base.service.impl;
 
 import com.example.base.constant.UserConstant;
-import com.example.base.dto.RoleDTO;
 import com.example.base.entity.Role;
 import com.example.base.entity.User;
 import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.IdNotMatchException;
+import com.example.base.exception.domain.UserAgeNotValidate;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.UserDTO;
 import com.example.base.repository.RoleRepository;
@@ -16,12 +16,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 /**
  * Class xử lý logic của User
@@ -73,34 +71,58 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public UserDTO handleInsert(UserDTO userDTO) {
-        if (userDTO.getId() != null) {
-            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
+        if (userUtils.validateUser(userDTO)) {
+            if (userDTO.getId() != null) {
+                throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
+            }
+            List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+            User user = userUtils.mapUserDtoToUser(userDTO);
+            user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
+            user.setRoles(roles);
+            return userUtils.mapUserToUserDto(userRepository.save(user));
         }
-        Optional<User> userCreated = userRepository.sp_createUser(
-                userDTO.getDateOfBirth(),
-                passwordEncoder.encode(userDTO.getAuthenticationCode()),
-                userDTO.getEmail(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getPhoneNumber(),
-                userDTO.getUsername());
-        return userUtils.mapUserToUserDto(userCreated.get());
+        throw new UserAgeNotValidate(UserConstant.AGE_NOT_VALID);
     }
-//    @Override
-//    @Transactional
-//    public UserDTO handleInsert(UserDTO userDTO) {
-//        if (userDTO.getId() != null) {
-//            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
-//        }
-//
-//        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
-//        User user = userUtils.mapUserDtoToUser(userDTO);
-//        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
-//        user.setRoles(roles);
-//        return userUtils.mapUserToUserDto(userRepository.save(user));
-//
-//    }
+    /**
+     * Xử lý khi update User
+     *
+     * @param id của user cần update
+     * @param userDTO thông tin user cần sửa
+     * @return User thông tin user đã được update
+     */
+    @Override
+    @Transactional
+    public UserDTO handleUpdate(Long id, UserDTO userDTO) {
+        if(userUtils.validateUser(userDTO)){
+            if (id != userDTO.getId()) {
+                throw new IdNotMatchException(UserConstant.ID_NOT_MATCH);
+            }
+            if (id == null || !userRepository.existsById(id)) {
+                throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
+            }
+            Optional<User> userUpdate = userRepository.findById(id);
+            User user = userUpdate.get();
+            user.setId(id);
+            user.setUsername(userDTO.getUsername());
+            user.setFirstName(userDTO.getFirstName());
+            user.setLastName(userDTO.getLastName());
+            user.setEmail(userDTO.getEmail());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user.setDateOfBirth(userDTO.getDateOfBirth());
+            user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
 
+            List<Role> updatedRoles = userUtils.mapRoles(userDTO.getRoles());
+            for (Role role : updatedRoles) {
+                if (!roleRepository.existsById(role.getId())) {
+                    throw new UserNotFoundException(UserConstant.ROLE_NOT_FOUND);
+                }
+            }
+            user.setRoles(updatedRoles);
+            userRepository.save(user);
+            return userUtils.mapUserToUserDto(user);
+        }
+        throw new UserAgeNotValidate(UserConstant.AGE_NOT_VALID);
+    }
 
 //    @Override
 //    @Transactional
@@ -127,44 +149,8 @@ public class UserService implements IUserService {
 //
 //        return userUtils.mapUserToUserDto(userUpdate.get());
 //    }
-    /**
-     * Xử lý khi update User
-     *
-     * @param id của user cần update
-     * @param userDTO thông tin user cần sửa
-     * @return User thông tin user đã được update
-     */
-    @Override
-    @Transactional
-    public UserDTO handleUpdate(Long id, UserDTO userDTO) {
-        if (id != userDTO.getId()) {
-            throw new IdNotMatchException(UserConstant.ID_NOT_MATCH);
-        }
-        if (id == null || !userRepository.existsById(id)) {
-            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
-        }
-        Optional<User> userUpdate = userRepository.findById(id);
-        User user = userUpdate.get();
-        user.setId(id);
-        user.setUsername(userDTO.getUsername());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setDateOfBirth(userDTO.getDateOfBirth());
-        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
 
-        List<Role> updatedRoles = userUtils.mapRoles(userDTO.getRoles());
-        for (Role role : updatedRoles) {
-            if (!roleRepository.existsById(role.getId())) {
-                throw new UserNotFoundException(UserConstant.ROLE_NOT_FOUND);
-            }
-        }
-        user.setRoles(updatedRoles);
-        userRepository.save(user);
-        return userUtils.mapUserToUserDto(user);
 
-    }
 //    @Override
 //    @Transactional
 //    public UserDTO handleUpdate(Long id, UserDTO userDTO) {

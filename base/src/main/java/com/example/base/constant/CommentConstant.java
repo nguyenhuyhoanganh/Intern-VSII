@@ -2,6 +2,8 @@ package com.example.base.constant;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Properties;
+
 /**
  * @author ThangDH
  */
@@ -10,7 +12,6 @@ import org.springframework.http.HttpStatus;
  */
 
 public class CommentConstant {
-
     public static final String CREATE_COMMENT_DAY = "Ngayf taoj không hợp leej ";
     public static final String CONTENT = "Noi dung không được trống";
     public static final String COMMENT_NOT_FOUND="Khong tim thay comment";
