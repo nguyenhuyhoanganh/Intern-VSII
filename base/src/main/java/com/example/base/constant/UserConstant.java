@@ -33,6 +33,8 @@ public class UserConstant {
     public static final String USER_NOT_FOUND_BY_ID="Khong tim thay nguoi dung co id";
 
     public static final String USERNAME_NOT_BLANK = "Username không được trống";
+    public static final String AGE_NOT_VALID="Tuổi phải trên 18";
     public static final String AUTHENTICATION_CODE_NOT_BLANK = "Authentication code không được trống";
     public static final String ID_NOT_MATCH = "Id trên url và id trong Object phải trùng nhau";
+
 }
