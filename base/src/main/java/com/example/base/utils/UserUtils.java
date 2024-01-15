@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 @Component
 @RequiredArgsConstructor
 public class UserUtils {
@@ -35,4 +38,14 @@ public class UserUtils {
         userDTO.setAuthenticationCode(UserConstant.BLANK);
         return userDTO;
     }
+    public boolean validateUser(UserDTO userDTO){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate dateOfBirth = userDTO.getDateOfBirth();
+        int age = Period.between(dateOfBirth, currentDate).getYears();
+        if(age<18){
+           return false;
+        }
+        return true;
+    }
+
 }

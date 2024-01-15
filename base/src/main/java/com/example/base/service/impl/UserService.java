@@ -1,9 +1,11 @@
 package com.example.base.service.impl;
 
 import com.example.base.constant.UserConstant;
+import com.example.base.dto.RoleDTO;
 import com.example.base.entity.Role;
 import com.example.base.entity.User;
 import com.example.base.enumeration.RoleEnum;
+import com.example.base.exception.domain.UserAgeNotValidate;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.UserDTO;
 import com.example.base.repository.RoleRepository;
@@ -15,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
 
 /**
  * Class xử lý logic của User
@@ -61,6 +63,22 @@ public class UserService implements IUserService {
      * @param userDTO
      * @return userDTO
      */
+    @Override
+    @Transactional
+    public UserDTO handleInsert(UserDTO userDTO) {
+        if (userUtils.validateUser(userDTO)) {
+            if (userDTO.getId() != null) {
+                throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
+            }
+            List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+            User user = userUtils.mapUserDtoToUser(userDTO);
+            user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
+            user.setRoles(roles);
+            return userUtils.mapUserToUserDto(userRepository.save(user));
+        }
+        throw new UserAgeNotValidate(UserConstant.AGE_NOT_VALID);
+    }
+
 //    @Override
 //    @Transactional
 //    public UserDTO handleInsert(UserDTO userDTO) {
@@ -68,35 +86,37 @@ public class UserService implements IUserService {
 //            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
 //        }
 //
-//        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
-//        User user = userUtils.mapUserDtoToUser(userDTO);
-//        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
-//        user.setRoles(roles);
-//        return userUtils.mapUserToUserDto(userRepository.save(user));
+////        List<Role> roles = userDTO.getRoles();
+////        if (roles == null || roles.isEmpty()) {
+////            // Nếu không có roles, thiết lập vai trò mặc định là ROLE_USER
+////            roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+//////        if (userDTO.getRoles() == null || userDTO.getRoles().isEmpty()) {
+//////            userDTO.setRoles(RoleEnum.ROLE_USER.name()); // or set the appropriate default role
+//////        }
+////        List<User> users = (List<User>) roleRepository.findByRoleName(RoleEnum.ROLE_USER).get();
+//        LocalDate currentDate = LocalDate.now();
+//        LocalDate dateOfBirth = userDTO.getDateOfBirth();
+//        int age = Period.between(dateOfBirth, currentDate).getYears();
+//        System.out if (age < 18) {
+////            throw new RuntimeException(UserConstant.AGE_NOT_VALID);
+////        }else {.println(age);
 //
-//    }
-    @Override
-    @Transactional
-    public UserDTO handleInsert(UserDTO userDTO) {
-        if (userDTO.getId() != null) {
-            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
-        }
-
-//        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+////        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
 //        User user = userUtils.mapUserDtoToUser(userDTO);
-//        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
-//        user.setRoles(roles);
-
-        Optional<User> userCreated = userRepository.sp_createUser(
-                userDTO.getDateOfBirth(),
-                passwordEncoder.encode(userDTO.getAuthenticationCode()),
-                userDTO.getEmail(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getPhoneNumber(),
-                userDTO.getUsername());
-        return userUtils.mapUserToUserDto(userCreated.get());
-    }
+////        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
+//           user.setRoles(roles);
+//            Optional<User> userCreated = userRepository.sp_createUser(
+//                    userDTO.getDateOfBirth(),
+//
+//                    passwordEncoder.encode(userDTO.getAuthenticationCode()),
+//                    userDTO.getEmail(),
+//                    userDTO.getFirstName(),
+//                    userDTO.getLastName(),
+//                    userDTO.getPhoneNumber(),
+//                    userDTO.getUsername());
+//            return userUtils.mapUserToUserDto(userCreated.get());
+//        }
+//    }
 
     /**
      * Xử lý khi update User
@@ -131,24 +151,28 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public UserDTO handleUpdate(Long id, UserDTO userDTO) {
-
-
+        // Check if the user with the given ID exists
         if (id == null || !userRepository.existsById(id)) {
             throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
         }
-        // tham số của user đc thay đổi
-        Optional<User> userUpdate = userRepository.sp_updateUser(
-                id,
-                userDTO.getDateOfBirth(),
-                passwordEncoder.encode(userDTO.getAuthenticationCode()),
-                userDTO.getEmail(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getPhoneNumber(),
-                userDTO.getUsername()
-        );
 
-        return userUtils.mapUserToUserDto(userUpdate.get());
+        // Validate age is over 18
+
+            // Update user information in the repository
+            Optional<User> userUpdate = userRepository.sp_updateUser(
+                    id,
+                    userDTO.getDateOfBirth(),
+                    passwordEncoder.encode(userDTO.getAuthenticationCode()),
+                    userDTO.getEmail(),
+                    userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getPhoneNumber(),
+                    userDTO.getUsername()
+            );
+            // Map and return the updated user DTO
+            return userUtils.mapUserToUserDto(userUpdate.get());
+
+
     }
 
     /**
