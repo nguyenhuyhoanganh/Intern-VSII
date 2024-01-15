@@ -1,5 +1,7 @@
 package com.example.base.controller;
 
+import com.example.base.constant.UserConstant;
+import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.ResponseDTO;
 import com.example.base.dto.UserDTO;
@@ -75,10 +77,17 @@ public class UserController {
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<UserDTO> getById(@PathVariable Optional<Long> id) {
+        // lấy người dùng đang đăng nhập
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        customUserDetails.getUser().getRoles().forEach(role -> System.out.println(role.getRoleName()));
-        System.out.println(customUserDetails.getUser().getId());
+
+        // danh sách roles và permission của người dùng
+        List<RoleEnum> roles = customUserDetails.getUser().getRoles().stream().map(role -> role.getRoleName()).toList();
+
+        // kiểm tra
+        if (roles.contains(RoleEnum.ROLE_USER) && (!id.get().equals(customUserDetails.getUser().getId()))){
+            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND+" id:"+id.get());
+        }
 
         return ResponseDTO.<UserDTO>builder()
                 .data(userService.getById(id.orElseThrow(() -> new UserNotFoundException("ID không hợp lệ"))))
@@ -110,8 +119,12 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Trả về người dùng và ca thông tin khác"),
             @ApiResponse(responseCode = "404", description = "Lỗi không tìm thấy người dùng hoặc không thỏa mãn validate với id được gửi"),
     })
+
     @Parameters({@Parameter(name = "UserDTO", description = "thông tin cần update của người dùng"),
             @Parameter(name = "id", description = "id của user câần update")})
+//
+//    @Parameters({@Parameter(name = "UserDTO",description = "thông tin cần update của người dùng"),
+//            @Parameter(name = "id",description = "id của user cần update")})
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {

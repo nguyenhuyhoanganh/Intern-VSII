@@ -1,11 +1,18 @@
 package com.example.base.utils;
 
 import com.example.base.constant.UserConstant;
+import com.example.base.dto.RoleDTO;
+import com.example.base.entity.Role;
 import com.example.base.entity.User;
 import com.example.base.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Component
 @RequiredArgsConstructor
@@ -35,4 +42,21 @@ public class UserUtils {
         userDTO.setAuthenticationCode(UserConstant.BLANK);
         return userDTO;
     }
+
+    public List<Role> mapRoles(List<RoleDTO> roleDTOList) {
+        return roleDTOList.stream()
+                .map(roleDTO -> modelMapper.map(roleDTO, Role.class))
+                .collect(Collectors.toList());
+    }
+    public boolean validateUser(UserDTO userDTO){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate dateOfBirth = userDTO.getDateOfBirth();
+        int age = Period.between(dateOfBirth, currentDate).getYears();
+        if(age<18){
+           return false;
+        }
+        return true;
+    }
+
+
 }

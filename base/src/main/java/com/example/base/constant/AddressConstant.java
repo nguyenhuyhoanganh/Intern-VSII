@@ -2,6 +2,8 @@ package com.example.base.constant;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Properties;
+
 /**
  * Là 1 class chứa các hằng số liên quan đến kiểm tra dữ liệu của địa chỉ.
  * @author Phuong Oanh
@@ -19,6 +21,7 @@ public class AddressConstant {
 //
 //    public static final String ADDRESS_NOT_FOUND = service.getMessage("validation.address.not_found");
 //    public static final String USER_NOT_FOUND = service.getMessage("exception.user.not_found");
+
     public static final String ADDRESS_NOT_FOUND = "Địa chỉ không tồn tại";
     public static final String ADDRESS_IS_NULL = "Id phải null";
     public static final String ADDRESS_NOT_MATCH = "Id không khớp với id được truyền";

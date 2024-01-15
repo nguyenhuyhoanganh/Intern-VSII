@@ -25,6 +25,7 @@ public class UserConstant {
     public static final String PHONE_NUMBER_NOT_BLANK = "Số điện thoại không được trống";
     public static final String DATE_OF_BIRTH_NOT_VALID = "Ngày sinh không hợp lệ hoặc có kiêu 'DD-MM-YYYY'";
     public static final String USER_MESSAGE_NOT_FOUND = "Người dùng không tồn tại";
+    public static final String ROLE_NOT_FOUND = "Role không tồn tại";
     public static final String USER_MESSAGE_IS_NULL = "Id không hợp lệ. Id là null";
     public static final String USER_MESSAGE_UPDATE_FAIL = "Update User thất bại !";
     public static final String USER_NOT_FOUND_BY_USERNAME = "Không tìm thấy người dùng có username: ";
@@ -32,6 +33,8 @@ public class UserConstant {
     public static final String USER_NOT_FOUND_BY_ID="Khong tim thay nguoi dung co id";
 
     public static final String USERNAME_NOT_BLANK = "Username không được trống";
+    public static final String AGE_NOT_VALID="Tuổi phải trên 18";
     public static final String AUTHENTICATION_CODE_NOT_BLANK = "Authentication code không được trống";
     public static final String ID_NOT_MATCH = "Id trên url và id trong Object phải trùng nhau";
+
 }
