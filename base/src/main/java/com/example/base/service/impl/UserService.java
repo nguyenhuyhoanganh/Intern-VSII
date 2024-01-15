@@ -79,44 +79,7 @@ public class UserService implements IUserService {
         throw new UserAgeNotValidate(UserConstant.AGE_NOT_VALID);
     }
 
-//    @Override
-//    @Transactional
-//    public UserDTO handleInsert(UserDTO userDTO) {
-//        if (userDTO.getId() != null) {
-//            throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
-//        }
-//
-////        List<Role> roles = userDTO.getRoles();
-////        if (roles == null || roles.isEmpty()) {
-////            // Nếu không có roles, thiết lập vai trò mặc định là ROLE_USER
-////            roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
-//////        if (userDTO.getRoles() == null || userDTO.getRoles().isEmpty()) {
-//////            userDTO.setRoles(RoleEnum.ROLE_USER.name()); // or set the appropriate default role
-//////        }
-////        List<User> users = (List<User>) roleRepository.findByRoleName(RoleEnum.ROLE_USER).get();
-//        LocalDate currentDate = LocalDate.now();
-//        LocalDate dateOfBirth = userDTO.getDateOfBirth();
-//        int age = Period.between(dateOfBirth, currentDate).getYears();
-//        System.out if (age < 18) {
-////            throw new RuntimeException(UserConstant.AGE_NOT_VALID);
-////        }else {.println(age);
-//
-////        List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
-//        User user = userUtils.mapUserDtoToUser(userDTO);
-////        user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
-//           user.setRoles(roles);
-//            Optional<User> userCreated = userRepository.sp_createUser(
-//                    userDTO.getDateOfBirth(),
-//
-//                    passwordEncoder.encode(userDTO.getAuthenticationCode()),
-//                    userDTO.getEmail(),
-//                    userDTO.getFirstName(),
-//                    userDTO.getLastName(),
-//                    userDTO.getPhoneNumber(),
-//                    userDTO.getUsername());
-//            return userUtils.mapUserToUserDto(userCreated.get());
-//        }
-//    }
+
 
     /**
      * Xử lý khi update User
