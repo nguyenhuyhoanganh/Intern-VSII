@@ -7,23 +7,9 @@ VALUES (2, 'user', '$2a$10$Hj4cEnXFNuUuVucxMa18ceoYoK.XFh3QwJ.OPsspWFI3jnsw9cx3i
 
 -- Insert Table Role
 INSERT INTO roles (id, role_name)
-VALUES (1, 'ROLE_ADMIN');
+VALUES (1, 'ADMIN');
 INSERT INTO roles (id, role_name)
-VALUES (2, 'ROLE_USER');
-
--- Insert permission
--- INSERT INTO permissions(id,name)
--- VALUES(1,'READ_ONE_USER_PERMISSION');
--- INSERT INTO permissions(id,name)
--- VALUES(2,'READ_MANY_USER_PERMISSION');
-INSERT INTO permissions(id,name)
-VALUES(1,'VIEW_ALL_USERS');
-INSERT INTO permissions(id,name)
-VALUES(2,'CREATE_USER');
-INSERT INTO permissions(id,name)
-VALUES(3,'UPDATE_USER');
-INSERT INTO permissions(id,name)
-VALUES(4,'VIEW_USER_DETAILS');
+VALUES (2, 'USER');
 
 -- Insert table Roles_Users
 INSERT INTO users_roles (role_id, user_id)
@@ -32,19 +18,6 @@ VALUES (1, 1);
 -- VALUES (2, 1);
 INSERT INTO users_roles (role_id, user_id)
 VALUES (2, 2);
-
-
---Insert Roles_Permissions
-INSERT INTO roles_permissions(permission_id,role_id)
-VALUES (1,1);
-INSERT INTO roles_permissions(permission_id,role_id)
-VALUES (2,1);
-INSERT INTO roles_permissions(permission_id,role_id)
-VALUES (3,1);
-INSERT INTO roles_permissions(permission_id,role_id)
-VALUES (4,1);
-INSERT INTO roles_permissions(permission_id,role_id)
-VALUES (4,2);
 
 
 -- Insert Table Address
