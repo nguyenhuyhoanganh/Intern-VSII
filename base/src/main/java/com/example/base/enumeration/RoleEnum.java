@@ -6,6 +6,6 @@ package com.example.base.enumeration;
  */
 
 public enum RoleEnum {
-    ROLE_ADMIN, // admin có quyền: ...
-    ROLE_USER // user có quyền: ...
+    ROLE_ADMIN, // admin có quyền: CRUD all
+    ROLE_USER // user có quyền: get user detail
 }

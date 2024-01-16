@@ -12,10 +12,24 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
+    /**
+     * Kiểm tra user bằng id nếu tồn tại trả về true và ngự lại trả về false
+     * @param id id user cần tìm
+     * @return true or flase
+     */
     boolean existsById(Long id);
 
+    /**
+     * Lấy ra user bằng username
+     * @param username username user cần tìm
+     * @return 1 Object Option<User>
+     */
     Optional<User> findByUsername(String username);
 
+    /**
+     * Trả về tất cả các user có trong database
+     * @return về tất cả danh sách
+     */
     @Query(value = "call sp_findAllUser()",nativeQuery = true)
     List<User> sp_findAllUser();
 

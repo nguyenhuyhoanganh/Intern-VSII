@@ -1,6 +1,7 @@
 package com.example.base.controller;
 
 import com.example.base.constant.UserConstant;
+import com.example.base.enumeration.PermissionEnum;
 import com.example.base.enumeration.RoleEnum;
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.ResponseDTO;
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +44,8 @@ public class UserController {
 
     private final IUserService userService;
 
+    private final String ROLE_ADMIN = RoleEnum.ROLE_ADMIN.toString();
+
     // get all
 
     /**
@@ -55,6 +60,7 @@ public class UserController {
     })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseDTO<List<UserDTO>> getAll() {
         return ResponseDTO.<List<UserDTO>>builder()
                 .data(userService.getAll())
@@ -83,6 +89,7 @@ public class UserController {
 
         // danh sách roles và permission của người dùng
         List<RoleEnum> roles = customUserDetails.getUser().getRoles().stream().map(role -> role.getRoleName()).toList();
+//        List<PermissionEnum> permissions = roles.;
 
         // kiểm tra
         if (roles.contains(RoleEnum.ROLE_USER) && (!id.get().equals(customUserDetails.getUser().getId()))){
@@ -143,6 +150,7 @@ public class UserController {
     @Parameters(@Parameter(name = "id", description = "id của user câần update"))
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Secured("ROLE_ADMIN")
     public ResponseDTO<UserDTO> deleteById(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseDTO.<UserDTO>builder()

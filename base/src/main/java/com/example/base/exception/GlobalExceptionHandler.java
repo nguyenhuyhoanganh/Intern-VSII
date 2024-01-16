@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> userNotFoundException(UserNotFoundException userNotFoundException) {
         ResponseDTO<?> responseBody = ResponseDTO.builder().message(
                         userNotFoundException.getMessage())

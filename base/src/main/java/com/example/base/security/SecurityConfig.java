@@ -55,8 +55,10 @@ public class SecurityConfig extends Exception{
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
-                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
+//                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString());
+//                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
+                    req.requestMatchers(HttpMethod.GET,"/users/*").hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
+                    req.requestMatchers("/users","/users/**").hasAnyAuthority(RoleEnum.ROLE_ADMIN.toString());
                     req.anyRequest().permitAll();
 
                 })
