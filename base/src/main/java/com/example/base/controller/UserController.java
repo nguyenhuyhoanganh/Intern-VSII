@@ -60,7 +60,7 @@ public class UserController {
     })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseDTO<List<UserDTO>> getAll() {
         return ResponseDTO.<List<UserDTO>>builder()
                 .data(userService.getAll())
@@ -93,7 +93,7 @@ public class UserController {
 
         // kiểm tra
         if (roles.contains(RoleEnum.USER) && (!id.get().equals(customUserDetails.getUser().getId()))){
-            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND+" id:"+id.get());
+            throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND+" id: "+id.get());
         }
 
         return ResponseDTO.<UserDTO>builder()

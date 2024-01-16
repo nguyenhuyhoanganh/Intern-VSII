@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,5 +24,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleEnum roleName;
 
+    @OneToMany(mappedBy = "role",fetch = FetchType.EAGER)
+    private List<Permission> permissions;
 
 }
