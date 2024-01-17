@@ -75,7 +75,7 @@ public class UserService implements IUserService {
             if (userDTO.getId() != null) {
                 throw new RuntimeException(UserConstant.USER_MESSAGE_IS_NULL);
             }
-            List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.ROLE_USER).get());
+            List<Role> roles = Arrays.asList(roleRepository.findByRoleName(RoleEnum.USER).get());
             User user = userUtils.mapUserDtoToUser(userDTO);
             user.setAuthenticationCode(passwordEncoder.encode(userDTO.getAuthenticationCode()));
             user.setRoles(roles);

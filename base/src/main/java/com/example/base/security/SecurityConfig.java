@@ -57,9 +57,12 @@ public class SecurityConfig extends Exception{
                 .authorizeHttpRequests(req -> {
 //                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString());
 //                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
-                    req.requestMatchers(HttpMethod.GET,"/users/*").hasAnyAuthority(RoleEnum.ROLE_USER.toString(),RoleEnum.ROLE_ADMIN.toString());
-                    req.requestMatchers("/users","/users/**").hasAnyAuthority(RoleEnum.ROLE_ADMIN.toString());
-                    req.anyRequest().permitAll();
+                    req.requestMatchers(HttpMethod.GET,"/users/*")
+                            .hasAnyRole(RoleEnum.USER.name(),RoleEnum.ADMIN.name());
+                    req.requestMatchers("/users","/users/**")
+                            .hasAnyRole(RoleEnum.ADMIN.name());
+                    req.anyRequest()
+                            .permitAll();
 
                 })
                 .sessionManagement(

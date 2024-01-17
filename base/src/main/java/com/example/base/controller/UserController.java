@@ -44,7 +44,7 @@ public class UserController {
 
     private final IUserService userService;
 
-    private final String ROLE_ADMIN = RoleEnum.ROLE_ADMIN.toString();
+    private final String ROLE_ADMIN = RoleEnum.ADMIN.toString();
 
     // get all
 
@@ -92,7 +92,7 @@ public class UserController {
 //        List<PermissionEnum> permissions = roles.;
 
         // kiểm tra
-        if (roles.contains(RoleEnum.ROLE_USER) && (!id.get().equals(customUserDetails.getUser().getId()))){
+        if (roles.contains(RoleEnum.USER) && (!id.get().equals(customUserDetails.getUser().getId()))){
             throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND+" id:"+id.get());
         }
 
