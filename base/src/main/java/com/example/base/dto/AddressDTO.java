@@ -22,15 +22,15 @@ public class AddressDTO {
 
     private Long id;
 
-    @NotBlank(message = AddressConstant.LINE_NOT_BLANK)
+    @NotBlank(message ="{" + AddressConstant.LINE_NOT_BLANK + "}")
     private String line;
-    @NotBlank(message = AddressConstant.WARD_NOT_BLANK)
+    @NotBlank(message = "{" + AddressConstant.WARD_NOT_BLANK + "}")
     private String ward;
 
-    @NotBlank(message = AddressConstant.DISTRICT_NOT_BLANK)
+    @NotBlank(message = "{" + AddressConstant.DISTRICT_NOT_BLANK + "}")
     private String district;
 
-    @NotBlank(message = AddressConstant.PROVINCE_NOT_BLANK)
+    @NotBlank(message = "{" + AddressConstant.PROVINCE_NOT_BLANK + "}")
     private String province;
 
     private Long userId;

@@ -24,6 +24,6 @@ public class Role {
     private RoleEnum roleName;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
+    @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"permission_id", "role_id"})})
     private Collection<Permission> permissions;
 }

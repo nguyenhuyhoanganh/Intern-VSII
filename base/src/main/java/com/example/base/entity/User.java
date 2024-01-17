@@ -47,13 +47,5 @@ public class User {
     private Collection<Role> roles;
 
 
-//    @LastModifiedDate
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "modified_at")
-//    private Date modifiedAt;
-//
-//    @CreatedDate
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "created_at", nullable = false, updatable = false)
-//    private Date createdAt;
+
 }
