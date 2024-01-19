@@ -61,31 +61,47 @@ public class SecurityConfig extends Exception {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        user chỉ xem users/** (get)
 
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> {
-                    List<Permission> permissions = permissionRepository.findAll();
-                    for (Permission permission : permissions) {
-                        String role = permission.getPermissionName().name().substring(0,permission.getPermissionName().name().indexOf(SecurityConstant.INDEX_OF_));
+        http.csrf(AbstractHttpConfigurer::disable);
+        // uri
+        List<Permission> permissions = permissionRepository.findAll();
+        for (Permission permission : permissions) {
+            String role = permission.getPermissionName().name().substring(0, permission.getPermissionName().name().indexOf(SecurityConstant.INDEX_OF_));
 
-                        req.requestMatchers(
-                                permission.getUrl()
-                        ).hasRole(role);
+            http.authorizeHttpRequests(req -> {
+//                req.requestMatchers(
+//                        permission.getUrl()
+//                ).hasRole(role);
 
-                        req.requestMatchers(
-                                HttpMethod.valueOf(permission.getMethod().toString()),
-                                permission.getUrl()
-                        ).hasAnyAuthority(permission.getPermissionName().name());
-                    }
-                    req.anyRequest()
-                            .permitAll();
-                })
-                .sessionManagement(
-                        httpSecuritySessionManagement -> httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                req.requestMatchers(
+                        HttpMethod.valueOf(permission.getMethod().toString()),
+                        permission.getUrl()
+                ).hasAuthority(role);
+            });
+        }
 
-                .build();
+        //any request
+
+
+        //sesion manager
+        http.sessionManagement(
+                httpSecuritySessionManagement -> httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
+        // provider
+        http.authenticationProvider(authenticationProvider());
+
+        //filter
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeHttpRequests(req -> {
+            req.requestMatchers(HttpMethod.GET, SecurityConstant.PRIVATE_URIS_ROLE_USER)
+                    .hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name());
+            req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN)
+                    .hasAnyRole(RoleEnum.ADMIN.name());
+            req.anyRequest()
+                    .permitAll();
+        });
+        return http.build();
     }
 
 
