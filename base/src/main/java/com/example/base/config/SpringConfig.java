@@ -10,6 +10,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.KeyPair;
+
 /**
  * @author AnhNHH.
  * Class cấu hình chung cho Spring Boot.

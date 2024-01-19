@@ -2,6 +2,11 @@ package com.example.base.exception;
 
 import com.example.base.exception.domain.UserNotFoundException;
 import com.example.base.dto.ResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,6 +30,8 @@ public class GlobalExceptionHandler {
      * @param userNotFoundException
      * @return ResponseEntity<Object>
      */
+    @Operation(summary = "Thêm User ",
+            description = "Trả về người dùng và thông tin message trạng thái")
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> userNotFoundException(UserNotFoundException userNotFoundException) {
@@ -42,6 +49,8 @@ public class GlobalExceptionHandler {
      * @param ex
      * @return ResponseEntity<Object>
      */
+    @Operation(summary = "Thêm User ",
+            description = "Trả về người dùng và thông tin message trạng thái")
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(

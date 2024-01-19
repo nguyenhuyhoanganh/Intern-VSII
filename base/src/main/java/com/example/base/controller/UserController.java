@@ -57,6 +57,8 @@ public class UserController {
             description = "Trả về danh sách USER nếu thành công")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Trả về danh sách ngời dùng"),
+            @ApiResponse(responseCode = "403", description = "không có quyền"),
+            @ApiResponse(responseCode = "400", description = "Sai đường dẫn truy cập"),
     })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -107,8 +109,12 @@ public class UserController {
             description = "Trả về người dùng và thông tin message trạng thái")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Trả về người dùng và ca thông tin khác"),
+            @ApiResponse(responseCode = "403", description = "không có quyền"),
+            @ApiResponse(responseCode = "400", description = "Sai đường dẫn truy cập"),
             @ApiResponse(responseCode = "404", description = "Lỗi không thỏa mãn validate. Tra về message lỗi"),
+
     })
+
     @Parameters(@Parameter(name = "AuthDTO.class", description = "Gửi lên 2 trường username và pass"))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -124,6 +130,8 @@ public class UserController {
             description = "Trả về người dùng và thông tin message trạng thái")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Trả về người dùng và ca thông tin khác"),
+            @ApiResponse(responseCode = "403", description = "không có quyền"),
+            @ApiResponse(responseCode = "400", description = "Sai đường dẫn truy cập"),
             @ApiResponse(responseCode = "404", description = "Lỗi không tìm thấy người dùng hoặc không thỏa mãn validate với id được gửi"),
     })
 
@@ -146,6 +154,8 @@ public class UserController {
             description = "Trả về người dùng và thông tin message trạng thái")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Trả về người dùng đã được xóa"),
+            @ApiResponse(responseCode = "403", description = "không có quyền"),
+            @ApiResponse(responseCode = "400", description = "Sai đường dẫn truy cập"),
     })
     @Parameters(@Parameter(name = "id", description = "id của user câần update"))
     @DeleteMapping("{id}")
