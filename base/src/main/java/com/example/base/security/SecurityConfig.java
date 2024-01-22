@@ -1,7 +1,10 @@
 package com.example.base.security;
 
 import com.example.base.constant.SecurityConstant;
+import com.example.base.entity.Permission;
+import com.example.base.entity.Role;
 import com.example.base.enumeration.RoleEnum;
+import com.example.base.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +26,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author HungDV
@@ -31,7 +35,7 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends Exception{
+public class SecurityConfig extends Exception {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
@@ -41,6 +45,10 @@ public class SecurityConfig extends Exception{
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
+
     /**
      * Tạo 1 Bean cho SecurityFilterChain.
      * Sử dụng SecurityFilterChain caung cấp cấu hình cho Spring Security.
@@ -53,32 +61,53 @@ public class SecurityConfig extends Exception{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        user chỉ xem users/** (get)
 
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> {
-//                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString());
-//                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
-                    req.requestMatchers(HttpMethod.GET,"/users/*")
-                            .hasAnyRole(RoleEnum.USER.name(),RoleEnum.ADMIN.name());
-                    req.requestMatchers("/users","/users/**")
-                            .hasAnyRole(RoleEnum.ADMIN.name());
-                    req.anyRequest()
-                            .permitAll();
+        http.csrf(AbstractHttpConfigurer::disable);
+        // uri
+        List<Permission> permissions = permissionRepository.findAll();
+        for (Permission permission : permissions) {
+            String role = permission.getPermissionName().name().substring(0, permission.getPermissionName().name().indexOf(SecurityConstant.INDEX_OF_));
 
-                })
-                .sessionManagement(
-                        httpSecuritySessionManagement -> httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            http.authorizeHttpRequests(req -> {
+//                req.requestMatchers(
+//                        permission.getUrl()
+//                ).hasRole(role);
 
-                .build();
+                req.requestMatchers(
+                        HttpMethod.valueOf(permission.getMethod().toString()),
+                        permission.getUrl()
+                ).hasAuthority(role);
+            });
+        }
+
+        //any request
+
+
+        //sesion manager
+        http.sessionManagement(
+                httpSecuritySessionManagement -> httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
+        // provider
+        http.authenticationProvider(authenticationProvider());
+
+        //filter
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeHttpRequests(req -> {
+            req.requestMatchers(HttpMethod.GET, SecurityConstant.PRIVATE_URIS_ROLE_USER)
+                    .hasAnyRole(RoleEnum.USER.name(), RoleEnum.ADMIN.name());
+            req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN)
+                    .hasAnyRole(RoleEnum.ADMIN.name());
+            req.anyRequest()
+                    .permitAll();
+        });
+        return http.build();
     }
-
-
 
 
     /**
      * Bean để dùng quản lý các người dùng đã đăng nhập
+     *
      * @param config AuthenticationManager.class
      * @return AuthenticationManager object bean
      * @throws Exception
@@ -114,4 +143,20 @@ public class SecurityConfig extends Exception{
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+    ////                    req.requestMatchers(HttpMethod.GET,SecurityConstant.PRIVATE_URIS_ROLE_USER).hasAnyAuthority(RoleEnum.ROLE_USER.toString());
+////                    req.requestMatchers(SecurityConstant.PRIVATE_URIS_ROLE_ADMIN).hasAuthority(RoleEnum.ROLE_ADMIN.toString());
+//                    req.requestMatchers(HttpMethod.GET,"/users/*")
+//                            .hasAnyRole(RoleEnum.USER.name(),RoleEnum.ADMIN.name());
+//                    req.requestMatchers("/users","/users/**")
+//                            .hasAnyRole(RoleEnum.ADMIN.name());
+//                    req.anyRequest()
+//                            .permitAll();
+//    List<Role> roles = roleRepository.findAll();
+//                    for (Role role : roles) {
+//        for (Permission permission : role.getPermissions()) {
+//            req.requestMatchers(permission.getMethod().toString(), permission.getUrl()).hasAnyRole(role.getRoleName().toString());
+//        }
+//    }
 }

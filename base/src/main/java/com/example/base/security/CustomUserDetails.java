@@ -45,7 +45,12 @@ public class CustomUserDetails implements UserDetails {
         this.user.getRoles().forEach(
                 role -> {
                     authorities.add(new SimpleGrantedAuthority(SecurityConstant.PREFIX_ROLE_NAME+role.getRoleName().name()));
-                    role.getRoleName().getPermissions().forEach(permissionEnum -> authorities.add(new SimpleGrantedAuthority(permissionEnum.name())));
+                    role.getPermissions().forEach(permissionEnum -> authorities.add(new SimpleGrantedAuthority(permissionEnum.getPermissionName().name())));
+                }
+        );
+        this.user.getRoles().forEach(
+                role -> {
+                    authorities.add(new SimpleGrantedAuthority(SecurityConstant.PREFIX_ROLE_NAME+role.getRoleName().name()));
                 }
         );
         return authorities;

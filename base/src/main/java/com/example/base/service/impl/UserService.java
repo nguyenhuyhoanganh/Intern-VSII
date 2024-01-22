@@ -41,7 +41,7 @@ public class UserService implements IUserService {
      */
     @Override
     public List<UserDTO> getAll() {
-        return userRepository.sp_findAllUser().stream().map(user -> userUtils.mapUserToUserDto(user)).toList();
+        return userRepository.findAll().stream().map(user -> userUtils.mapUserToUserDto(user)).toList();
     }
 
     /**
@@ -207,7 +207,7 @@ public class UserService implements IUserService {
         if (id == null || !userRepository.existsById(id)) {
             throw new UserNotFoundException(UserConstant.USER_MESSAGE_NOT_FOUND);
         }
-        userRepository.sp_deleteUserById(id);
+        userRepository.deleteById(id);
     }
 //    @Override
 //    @Transactional
